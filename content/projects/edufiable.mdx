@@ -1,0 +1,75 @@
+import { Wide } from "@/components/project-page";
+import { EdufiableImport } from "@/components/diagrams/edufiable-import";
+import { Oid4vciClaim } from "@/components/diagrams/oid4vci-claim";
+
+## The problem
+
+Edufiable is a BLOCKCHAIN.PT platform, developed at Instituto de Telecomunicações, that lets
+institutions issue diplomas as W3C Verifiable Credentials on EBSI, the European Blockchain Services
+Infrastructure. A student keeps the credential in a digital wallet and can prove their degree without
+asking the university to confirm it.
+
+A credential is only as good as the record behind it. Institutions bring academic records in bulk, and
+a wrong field or a duplicate record that slips through becomes a wrong credential. Then the student
+still has to get the credential into a wallet, through a protocol most people have never heard of.
+
+I joined the team part-time for five months and worked on both ends: getting records in safely, and
+getting credentials out to students.
+
+## What I built
+
+### A three-step import that catches problems before issuance
+
+The academic-record batch import became a three-step workflow: upload, preview, then review every line
+before anything is written.
+
+<Wide>
+  <EdufiableImport />
+</Wide>
+
+- **CSV and JSON.** The import originally took CSV only; I added JSON so institutions can export
+  records straight from their systems.
+- **Duplicate detection.** A record is identified by the student's tax number, the diploma title and
+  the diploma date. Duplicates inside the same file are blocking errors. Records that already exist in
+  the database are marked "will update", and the import upserts them, reporting how many were created
+  and how many were updated.
+- **Large batches.** Checks against the database go out in chunks of 200 so a big file doesn't hit
+  request limits.
+- **Batch monitor.** Each import becomes a batch (completed, partial or failed) with search,
+  pagination and the error for every row, so an administrator can see exactly what to fix. I extracted
+  the pagination into a shared component used by both lists.
+
+### Claiming a credential with OID4VCI
+
+Once a record is issued, the student claims the credential into a wallet using OpenID for Verifiable
+Credential Issuance (OID4VCI). I connected that claim flow to the imported records.
+
+<Wide>
+  <Oid4vciClaim />
+</Wide>
+
+- **Wallet-provider selector.** Students choose which wallet provider to claim with. Providers sit
+  behind one interface, so supporting another provider doesn't touch the claim flow.
+- **Status polling and expired offers.** The backend polls the provider until the offer is claimed;
+  offers that aren't claimed in time are marked as expired, and the student sees the current state.
+- **TechMinho fixes.** I fixed the TechMinho provider's OID4VCI token flow and adapted its credential
+  binding to the proof DID, then added claim polling for it.
+
+Smaller pieces along the way: silent refresh of backend access tokens, clearer navigation in the issuing
+flow, and a contrast fix in the theme.
+
+## What it changed
+
+With the review step, every row is labelled before anything is written, duplicates can't create a second record, and an administrator can
+re-run a corrected file safely because existing records are updated rather than duplicated. On the
+student side, a credential offer now has a visible lifecycle (pending, claimed or expired) instead of a
+QR code with no feedback.
+
+There are no usage numbers here: the platform was in development while I worked on it, and I'd rather
+not invent any.
+
+## Stack
+
+Next.js and TypeScript on the frontend, Express and Prisma with PostgreSQL on the backend, Docker
+Compose for local development. Screenshots aren't shown because the platform belongs to the project;
+the diagrams are drawn from its documentation and code.

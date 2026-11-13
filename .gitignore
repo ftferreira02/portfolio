@@ -1,0 +1,30 @@
+# Brainstorming companion sessions and throwaway mockups
+.superpowers/
+mockups/
+
+# Private source material (thesis originals, unblurred images)
+private/
+
+# Next.js
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Env
+.env*
+!.env.example
+
+# Tests
+playwright-report/
+test-results/
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Vercel
+.vercel
+*.pem
+npm-debug.log*

@@ -1,0 +1,106 @@
+import { Wide } from "@/components/project-page";
+import { MemoriaArchitecture } from "@/components/diagrams/memoria-architecture";
+import { PhotoPath } from "@/components/diagrams/photo-path";
+import { MessageUnderstanding } from "@/components/diagrams/message-understanding";
+import { RetrievalBeforeAfter } from "@/components/diagrams/retrieval-before-after";
+
+## The problem
+
+MEMORIA started as a lifelog retrieval system built at the University of Aveiro for the
+Lifelog Search Challenge (LSC). In the competition, trained operators search a
+shared collection of wearable-camera images that was indexed long before the session starts.
+
+Everyday use is different. People bring their own photos, wait for expensive analysis to finish, and
+usually remember only part of a moment: who was there, roughly where, what happened. Rarely a date or a
+file name. My thesis asked what it takes to turn a strong competition system into an application people
+can use on their own libraries, and then built it on top of the existing retrieval foundation instead of
+replacing it.
+
+## What I built
+
+I replaced the old client with a Next.js app and extended the Django backend for uploads, organisation,
+people and conversational search. All models run on the MEMORIA server, so no photo is sent to an
+outside service.
+
+<Wide>
+  <MemoriaArchitecture />
+</Wide>
+
+### Photos are searchable before analysis finishes
+
+Captioning, OCR, object and scene detection and face analysis are slow, so I rebuilt ingestion around
+Celery and Redis with persistent jobs in PostgreSQL. A photo becomes searchable as soon as its CLIP
+embedding is in Milvus; the rest of the enrichment arrives later, and the interface shows per-photo
+progress over WebSockets. Jobs are retried, and a recovery sweep picks up work that a restart
+interrupted.
+
+<Wide>
+  <PhotoPath />
+</Wide>
+
+On a 200-photo upload with face recognition enabled, the first photo was searchable after 11 seconds and
+all of them after about 12 minutes. Full analysis took about 12 seconds per photo, and all 1,600 jobs
+succeeded on the first attempt.
+
+### Days, Trips and Homes
+
+Photos are grouped into Days automatically. Homes are estimated from photo locations, and deterministic
+rules turn runs of days away from home into Trips (at least two dates, at most 30, with gaps bridged
+only between days that have supporting places). Owners can rename a Trip and change its Days, and those
+corrections are kept when the organisation is recomputed after new uploads.
+
+### People, with consent
+
+Face recognition is off until the owner enables it. Faces are grouped automatically, the owner names a
+group once, and those confirmed references are used to match new photos. Groups can be renamed,
+merged, split and corrected. Named people then become
+something you can search by.
+
+### Conversational search
+
+You describe a moment in a sentence. Trips, Albums and people are matched first, then a local language
+model (Qwen2.5-7B, served by Ollama) proposes what to look for and which constraints apply. The proposal is
+grounded and validated, and shown back as constraints you can edit. If the model is unavailable or slow,
+rules handle the message.
+
+<Wide>
+  <MessageUnderstanding />
+</Wide>
+
+### Hybrid retrieval that respects the filters
+
+In the inherited system, filters only restricted the full-text results, and visual search returned a
+global top 100 with no owner filter. I changed retrieval so both sources (CLIP vectors in Milvus and
+full-text in PostgreSQL) are restricted to the owner and the constraints before ranking, every photo is
+checked again, and the two lists are fused with reciprocal rank fusion. Each owner only ever sees their
+own photos, and automated tests check that separation.
+
+<Wide>
+  <RetrievalBeforeAfter />
+</Wide>
+
+## Results
+
+**User study.** Ten participants uploaded their own libraries of 150 to 534 photos and looked for
+moments in them.
+
+- All 120 tasks ended with the moment found within the three-minute limit.
+- The mean System Usability Scale score was **91.5**.
+- Eight of the ten ranked Search first among the three ways of looking (Search, Memories and Photos).
+
+**Rules versus the model.** On first descriptions, the rules were as accurate as the language model or
+more so. The model earned its place mainly in refinements, when the owner adjusts a search that's
+already on screen.
+
+**Lifelog Search Challenge 2026.** I wrote the system paper,
+[*MEMORIA: A Memory Enhancement and MOment RetrIeval Application at the LSC2026*](https://doi.org/10.1145/3810984.3817065)
+(ACM, LSC '26), and competed with the retrieval foundation and an early version of the
+natural-language interface. The competition console still runs on the same retrieval core as the new app.
+
+## What I'd do next
+
+The study also exposed requests where an unsupported part was dropped without notice. That is the
+first fix: decline an unsupported part openly, so the owner can see and correct it. After that, I'd
+test sending first descriptions to the rules and keeping the model for refinements, add an
+owner-controlled profile for relationships ("my sister"), and run a larger study with libraries of
+thousands of photos and people outside my own circle.

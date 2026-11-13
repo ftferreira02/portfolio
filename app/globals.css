@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+/* ---------- Colour tokens: Ink and cobalt ---------- */
+:root {
+  color-scheme: light;
+  --bg: #f8f9fb;
+  --surface: #22252e;
+  --surface-2: #323642;
+  --text: #22252e;
+  --text-muted: #5c6376;
+  --line: #e0e4ec;
+  --soft: #eef1f7;
+  --accent: #1849ed;
+  --accent-strong: #0f35c2;
+  --highlight: #f9c65d;
+  --on-surface: #eef1f7;
+  --on-surface-muted: #c3c9d6;
+  --surface-line: #4a5060;
+  --print: #eef1f7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #16181f;
+    --surface: #1f222b;
+    --surface-2: #2b2f3a;
+    --text: #eef1f7;
+    --text-muted: #a3aab9;
+    --line: #2f3340;
+    --soft: #232733;
+    --accent: #7d97ff;
+    --accent-strong: #a5b6ff;
+    --highlight: #f9c65d;
+    --on-surface: #eef1f7;
+    --on-surface-muted: #a3aab9;
+    --surface-line: #3d4250;
+    --print: #e3e7f0;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #16181f;
+  --surface: #1f222b;
+  --surface-2: #2b2f3a;
+  --text: #eef1f7;
+  --text-muted: #a3aab9;
+  --line: #2f3340;
+  --soft: #232733;
+  --accent: #7d97ff;
+  --accent-strong: #a5b6ff;
+  --highlight: #f9c65d;
+  --on-surface: #eef1f7;
+  --on-surface-muted: #a3aab9;
+  --surface-line: #3d4250;
+  --print: #e3e7f0;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-highlight: var(--highlight);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-muted: var(--on-surface-muted);
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.on-dark :focus-visible {
+  outline-color: var(--highlight);
+}
+
+::selection {
+  background: var(--highlight);
+  color: #22252e;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.link-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+}
+
+.link-underline:hover {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Diagrams (always drawn on a dark panel) ---------- */
+.diagram text {
+  font-family: var(--font-sans);
+}
+.d-box {
+  fill: var(--surface-2);
+  stroke: var(--surface-line);
+  stroke-width: 1.2;
+}
+.d-box-accent {
+  fill: var(--surface-2);
+  stroke: var(--highlight);
+  stroke-width: 1.5;
+}
+.d-text {
+  fill: var(--on-surface);
+  font-size: 14px;
+  font-weight: 500;
+}
+.d-small {
+  fill: var(--on-surface-muted);
+  font-size: 12px;
+}
+.d-note {
+  fill: var(--highlight);
+  font-size: 13px;
+}
+.d-line {
+  stroke: var(--on-surface-muted);
+  stroke-width: 1.5;
+  fill: none;
+}
+.d-life {
+  stroke: var(--surface-line);
+  stroke-width: 2;
+  stroke-dasharray: 3 5;
+}
+.d-flow {
+  stroke: #7d97ff;
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 5 6;
+  animation: d-flow 1.6s linear infinite;
+}
+.d-chip {
+  fill: #1849ed;
+}
+.d-chip-text {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+.d-arrow {
+  fill: var(--on-surface-muted);
+}
+@keyframes d-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .d-flow {
+    animation: none;
+  }
+}
+
+/* ---------- Long-form project text ---------- */
+.prose {
+  font-size: 1.0625rem;
+}
+.prose > :not(.wide) {
+  max-width: 68ch;
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 3.4vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-top: 2.6em;
+}
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  margin-top: 2em;
+}
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.6em;
+}
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.prose a:hover {
+  color: var(--accent);
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+.prose li::marker {
+  color: var(--text-muted);
+}
+.prose strong {
+  font-weight: 700;
+}
+.prose code {
+  font-size: 0.9em;
+  background: var(--soft);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.55em 0.8em 0.55em 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.prose th {
+  font-weight: 700;
+}
