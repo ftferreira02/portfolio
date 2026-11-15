@@ -8,7 +8,6 @@ export function HeroShell({ children }: { children: React.ReactNode }) {
       <HeroField />
       <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col justify-center px-4 py-16 sm:px-6">
         <div className="hero-large max-w-[38rem]">{children}</div>
-        <p className="absolute right-4 bottom-6 hidden text-[0.85rem] text-muted sm:right-6 md:block">Move your cursor.</p>
       </div>
     </section>
   );
