@@ -8,7 +8,7 @@ export const site = {
   intro: "MSc in Software Engineering, University of Aveiro.",
   availability: "Available for full-time roles",
   description:
-    "Francisco Ferreira is a full-stack software engineer in Aveiro, Portugal, who builds web products end to end and ships ML features. MSc in Software Engineering, University of Aveiro.",
+    "Full-stack software engineer in Aveiro, Portugal. I build web products end to end, including ML features.",
   location: "Aveiro, Portugal",
   dayToDay: ["Next.js", "TypeScript", "Django", "Python"],
   email: "tomasfreitas4054@gmail.com",
