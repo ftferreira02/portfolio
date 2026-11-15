@@ -66,7 +66,7 @@ export const alsoBuilt: SideProject[] = [
   {
     title: "Booking and payment apps",
     context: "KBAI Research, for Expedita's Gestools",
-    text: "Customer-facing booking and payment web apps configured per client brand, with sign-up, login, password recovery and vouchers on loyalty-program web services.",
-    stack: ["ASP.NET Core", "C#", "Blazor"],
+    text: "Booking and payment web apps for Expedita's Gestools, run from one codebase for several client brands, each with its own theme, settings and deployment. I built the customer account area on the loyalty programme's web services: sign-up, login with JWT sessions, password recovery, profile editing, and pages for past reservations and vouchers. I also worked on the booking steps (location, duration, tariff, extras) in a site available in four languages, and on a Microsoft Teams app where staff manage services, seasons, tariffs and bookings.",
+    stack: ["ASP.NET Core", "C#", "Razor Pages", "Blazor", "Microsoft Teams"],
   },
 ];
