@@ -1,4 +1,5 @@
 import { Arrowhead, DiagramPanel } from "./panel";
+import { PhoneBox, PhoneStack, PhoneStep } from "./phone";
 
 const stages = [
   {
@@ -24,13 +25,28 @@ const stages = [
   },
 ];
 
+const searchNote = "Search works after stage 2; stages 3 and 4 make results richer over time.";
+
 /** The four stages an added photo goes through, from thesis figure 4.3. */
 export function PhotoPath() {
   const w = 152;
   const gap = 14;
   return (
     <DiagramPanel caption="Every stage is a persistent job in PostgreSQL with owner, state, attempts and progress. A recovery sweep reschedules work interrupted by a restart.">
-      <svg viewBox={`0 0 ${4 * w + 3 * gap + 4} 300`} width="100%" role="img" aria-labelledby="pp-title pp-desc">
+      <div data-diagram-phone className="sm:hidden">
+        <PhoneStack>
+          {stages.map((stage, i) => <PhoneStep key={stage.title} first={i === 0}>
+            <PhoneBox title={stage.title} lines={[stage.where]} accent={Boolean(stage.note)}>
+              <ul role="list" className="mt-3 list-none space-y-1 text-[13px] text-muted">
+                {stage.steps.map((step) => <li key={step}>{step}</li>)}
+              </ul>
+              {stage.note && <p className="mt-3 text-[13px] font-medium text-accent">{stage.note}</p>}
+            </PhoneBox>
+          </PhoneStep>)}
+        </PhoneStack>
+        <p className="mt-3 text-[13px] font-medium text-accent">{searchNote}</p>
+      </div>
+      <svg className="hidden sm:block" viewBox={`0 0 ${4 * w + 3 * gap + 4} 300`} width="100%" role="img" aria-labelledby="pp-title pp-desc">
         <title id="pp-title">The path of an added photo</title>
         <desc id="pp-desc">
           Four stages. Receive: file checks, duplicate detection, date, place, thumbnail and Day. Index: a CLIP
@@ -67,7 +83,7 @@ export function PhotoPath() {
           );
         })}
         <text className="d-note" x="2" y="290">
-          Search works after stage 2; stages 3 and 4 make results richer over time.
+          {searchNote}
         </text>
       </svg>
     </DiagramPanel>

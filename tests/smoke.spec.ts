@@ -138,3 +138,32 @@ for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 3
     }
   });
 }
+
+for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 1]] as const) {
+  test(`${path}: diagrams switch layouts without horizontal overflow`, async ({ page }) => {
+    for (const width of [412, 360, 640, 1440]) {
+      await page.setViewportSize({ width, height: width === 1440 ? 900 : width === 360 ? 800 : 915 });
+      await page.goto(path);
+      const panels = page.locator("figure").filter({ has: page.locator("svg[role='img']") });
+      await expect(panels).toHaveCount(count);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      for (const panel of await panels.all()) {
+        expect(await panel.evaluate((element) => {
+          const bounds = element.getBoundingClientRect();
+          return bounds.left >= 0 && bounds.right <= innerWidth &&
+            [element, ...element.querySelectorAll("*")].every((child) =>
+              !(child instanceof HTMLElement) || child.scrollWidth <= child.clientWidth);
+        })).toBe(true);
+        const phone = panel.locator("[data-diagram-phone]");
+        const svg = panel.locator("svg[role='img']");
+        if (width < 640) {
+          await expect(phone).toBeVisible();
+          await expect(svg).toBeHidden();
+        } else {
+          await expect(phone).toBeHidden();
+          await expect(svg).toBeVisible();
+        }
+      }
+    }
+  });
+}

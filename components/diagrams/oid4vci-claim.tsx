@@ -16,11 +16,23 @@ const messages = [
   { from: 250, to: 430, y: 284, text: "poll status: claimed or expired" },
 ];
 
+function actorName(x: number) {
+  return actors.find((actor) => actor.x === x)!.label;
+}
+
 /** OID4VCI claim sequence as wired in Edufiable. */
 export function Oid4vciClaim() {
   return (
     <DiagramPanel caption="Wallet providers sit behind one interface, so a student can claim with Triveria or TechMinho. Offers that are not claimed in time are marked as expired.">
-      <svg viewBox="0 0 640 320" width="100%" role="img" aria-labelledby="oc-title oc-desc">
+      <ol data-diagram-phone className="list-decimal space-y-3 pl-5 text-sm leading-relaxed marker:text-muted sm:hidden">
+        {messages.map((message) => <li key={message.text} className="pl-1">
+          <div className="rounded-lg border border-line bg-bg px-3 py-2.5">
+            <p className="text-sm font-medium text-text">{actorName(message.from)} → {actorName(message.to)}:</p>
+            <p className="text-sm text-muted">{message.text}</p>
+          </div>
+        </li>)}
+      </ol>
+      <svg className="hidden sm:block" viewBox="0 0 640 320" width="100%" role="img" aria-labelledby="oc-title oc-desc">
         <title id="oc-title">Claiming a credential with OID4VCI</title>
         <desc id="oc-desc">
           The student asks to claim a credential and chooses a wallet provider. Edufiable asks the provider to create

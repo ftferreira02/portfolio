@@ -8,11 +8,7 @@ type PanelProps = {
 export function DiagramPanel({ caption, children, className = "" }: PanelProps) {
   return (
     <figure className={`rounded-2xl border border-line bg-card p-4 sm:p-6 ${className}`}>
-      {/* On a phone the drawing keeps a readable size and scrolls sideways. */}
-      <div className="diagram overflow-x-auto">
-        <div className="min-w-[640px] sm:min-w-0">{children}</div>
-      </div>
-      <p className="mt-2 text-[0.85rem] text-muted sm:hidden">Scroll sideways to see the whole diagram.</p>
+      <div className="diagram">{children}</div>
       {caption ? <figcaption className="mt-3 text-[0.92rem] text-muted">{caption}</figcaption> : null}
     </figure>
   );
