@@ -56,7 +56,7 @@ export const alsoBuilt: SideProject[] = [
   {
     title: "Quests@NEI",
     context: "Informatics Students' Association, University of Aveiro",
-    text: "Co-developed the frontend of a platform that rewards students for taking part in the association's activities. I built the activity calendar, the QR check-in that organisers scan at events, the first points leaderboard and a profile feed of points earned and spent. I also made expired sessions renew in the background and retry the request that failed.",
+    text: "Co-developed the frontend of a platform that rewards students for taking part in the association's activities. I built the activity calendar and activity pages, the QR check-in for organisers, the first points leaderboard and a profile feed of points earned and spent. I also made expired sessions renew in the background and retry the request that failed.",
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI"],
   },
 ];
