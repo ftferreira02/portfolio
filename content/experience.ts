@@ -56,17 +56,17 @@ export type SideProject = {
 
 export const alsoBuilt: SideProject[] = [
   {
-    title: "Booking and payment apps",
-    context: "KBAI Research, for Expedita's Gestools",
-    text: "Customer-facing booking and payment web apps configured per client brand, with sign-up, login, password recovery and vouchers on loyalty-program web services.",
-    stack: ["ASP.NET Core", "C#", "Blazor"],
-  },
-  {
     title: "Quests@NEI",
     href: "/projects/quests",
     linkLabel: "More about Quests@NEI",
     context: "Informatics Students' Association, University of Aveiro",
     text: "Co-developed the frontend of a platform that rewards students for taking part in the association's activities. I built the activity calendar and activity pages, the QR check-in for organisers, the first points leaderboard and a profile feed of points earned and spent. I also made expired sessions renew in the background and retry the request that failed.",
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI"],
+  },
+  {
+    title: "Booking and payment apps",
+    context: "KBAI Research, for Expedita's Gestools",
+    text: "Customer-facing booking and payment web apps configured per client brand, with sign-up, login, password recovery and vouchers on loyalty-program web services.",
+    stack: ["ASP.NET Core", "C#", "Blazor"],
   },
 ];
