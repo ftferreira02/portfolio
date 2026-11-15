@@ -1,5 +1,5 @@
 import { Wide } from "@/components/project-page";
-import { EdufiableImport } from "@/components/diagrams/edufiable-import";
+import { ImportDemo } from "@/components/home/import-demo";
 import { Oid4vciClaim } from "@/components/diagrams/oid4vci-claim";
 
 ## The problem
@@ -23,9 +23,9 @@ getting credentials out to students.
 The academic-record batch import became a three-step workflow: upload, preview, then review every line
 before anything is written.
 
-<Wide>
-  <EdufiableImport />
-</Wide>
+<div className="my-10">
+  <ImportDemo />
+</div>
 
 - **CSV and JSON.** The import originally took CSV only; I added JSON so institutions can export
   records straight from their systems.
@@ -65,11 +65,6 @@ re-run a corrected file safely because existing records are updated rather than 
 student side, a credential offer now has a visible lifecycle (pending, claimed or expired) instead of a
 QR code with no feedback.
 
-There are no usage numbers here: the platform was in development while I worked on it, and I'd rather
-not invent any.
-
-## Stack
-
-Next.js and TypeScript on the frontend, Express and Prisma with PostgreSQL on the backend, Docker
-Compose for local development. Screenshots aren't shown because the platform belongs to the project;
-the diagrams are drawn from its documentation and code.
+The platform was still in development while I worked on it, so there are no usage numbers to report.
+Screenshots aren't shown because the platform belongs to the project; the demo and the diagram above
+are drawn from its documentation and code.

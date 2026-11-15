@@ -13,8 +13,8 @@ export function MessageUnderstanding() {
           who, Rita; when, September 2025.
         </desc>
         <Arrowhead id="mu-arrow" />
-        <rect x="10" y="14" width="380" height="44" rx="22" fill="#fff" />
-        <text x="30" y="42" fontSize="15" fill="#22252e">
+        <rect className="d-box" x="10" y="14" width="380" height="44" rx="22" />
+        <text x="30" y="42" fontSize="15" fill="var(--text)">
           beach with Rita last September
         </text>
         <rect className="d-box" x="10" y="92" width="180" height="70" rx="10" />

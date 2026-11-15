@@ -126,3 +126,15 @@ test("keyboard focus survives removing a filter and clearing a technology", asyn
   await page.getByRole("button", { name: "Clear" }).click();
   await expect(django).toBeFocused();
 });
+
+for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 3]] as const) {
+  test(`${path}: every "On this page" link points at a heading`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(path);
+    const links = page.getByRole("navigation", { name: "On this page" }).getByRole("link");
+    await expect(links).toHaveCount(count);
+    for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))) {
+      await expect(page.locator(`h2${href}`), href ?? "").toHaveCount(1);
+    }
+  });
+}

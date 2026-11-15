@@ -73,7 +73,7 @@ export function SiteHeader() {
             </li>
           </ul>
           <details className="relative sm:hidden">
-            <summary className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full border border-line [&::-webkit-details-marker]:hidden">
+            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full border border-line [&::-webkit-details-marker]:hidden">
               <span className="sr-only">Menu</span>
               <svg
                 aria-hidden="true"
@@ -93,7 +93,7 @@ export function SiteHeader() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="block rounded-md px-3 py-2 hover:bg-soft"
+                    className="block rounded px-3 py-2.5 hover:bg-soft"
                   >
                     {item.label}
                   </Link>
@@ -102,7 +102,7 @@ export function SiteHeader() {
               <li>
                 <a
                   href={site.cv}
-                  className="block rounded-md px-3 py-2 hover:bg-soft"
+                  className="block rounded px-3 py-2.5 hover:bg-soft"
                 >
                   CV
                 </a>

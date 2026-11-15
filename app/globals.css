@@ -106,10 +106,6 @@ body {
   border-radius: 4px;
 }
 
-.on-dark :focus-visible {
-  outline-color: var(--highlight);
-}
-
 ::selection {
   background: var(--highlight);
   color: #22252e;
@@ -162,59 +158,60 @@ p {
   }
 }
 
-/* ---------- Diagrams (always drawn on a dark panel) ---------- */
+/* ---------- Diagrams (drawn on a card, in the page's own colours) ---------- */
 .diagram text {
   font-family: var(--font-sans);
 }
 .d-box {
-  fill: var(--surface-2);
-  stroke: var(--surface-line);
+  fill: var(--bg);
+  stroke: color-mix(in srgb, var(--text) 18%, transparent);
   stroke-width: 1.2;
 }
 .d-box-accent {
-  fill: var(--surface-2);
-  stroke: var(--highlight);
+  fill: var(--chip);
+  stroke: var(--accent);
   stroke-width: 1.5;
 }
 .d-text {
-  fill: var(--on-surface);
+  fill: var(--text);
   font-size: 14px;
   font-weight: 500;
 }
 .d-small {
-  fill: var(--on-surface-muted);
+  fill: var(--text-muted);
   font-size: 12px;
 }
 .d-note {
-  fill: var(--highlight);
+  fill: var(--accent);
   font-size: 13px;
+  font-weight: 500;
 }
 .d-line {
-  stroke: var(--on-surface-muted);
+  stroke: var(--text-muted);
   stroke-width: 1.5;
   fill: none;
 }
 .d-life {
-  stroke: var(--surface-line);
+  stroke: color-mix(in srgb, var(--text) 22%, transparent);
   stroke-width: 2;
   stroke-dasharray: 3 5;
 }
 .d-flow {
-  stroke: #7d97ff;
+  stroke: var(--accent);
   stroke-width: 2;
   fill: none;
   stroke-dasharray: 5 6;
 }
 .d-chip {
-  fill: #1849ed;
+  fill: var(--accent);
 }
 .d-chip-text {
-  fill: #fff;
+  fill: var(--on-accent);
   font-size: 13px;
   font-weight: 700;
 }
 .d-arrow {
-  fill: var(--on-surface-muted);
+  fill: var(--text-muted);
 }
 
 /* ---------- Long-form project text ---------- */
@@ -255,20 +252,22 @@ p {
 .prose a:hover {
   color: var(--accent);
 }
-.prose ul,
-.prose ol {
+.prose > ul,
+.prose > ol {
   padding-left: 1.3em;
 }
-.prose ul {
+.prose > ul {
   list-style: disc;
 }
-.prose ol {
+.prose > ol {
   list-style: decimal;
 }
-.prose li + li {
+.prose > ul > li + li,
+.prose > ol > li + li {
   margin-top: 0.4em;
 }
-.prose li::marker {
+.prose > ul > li::marker,
+.prose > ol > li::marker {
   color: var(--text-muted);
 }
 .prose strong {
@@ -280,21 +279,21 @@ p {
   padding: 0.1em 0.35em;
   border-radius: 4px;
 }
-.prose table {
+.prose > table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.95rem;
   display: block;
   overflow-x: auto;
 }
-.prose th,
-.prose td {
+.prose > table th,
+.prose > table td {
   text-align: left;
   padding: 0.55em 0.8em 0.55em 0;
   border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
-.prose th {
+.prose > table th {
   font-weight: 700;
 }
 
@@ -539,7 +538,7 @@ p {
 
 /* ---------- Site mark ---------- */
 .site-mark-wave {
-  transition: transform 0.4s ease-out;
+  transition: transform 0.2s ease-out;
 }
 .site-mark:hover .site-mark-wave,
 .site-mark:focus-visible .site-mark-wave {

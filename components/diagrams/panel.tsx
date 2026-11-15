@@ -4,12 +4,16 @@ type PanelProps = {
   className?: string;
 };
 
-/** Dark rounded panel that every diagram sits on, in both themes. */
+/** The card every diagram sits on. */
 export function DiagramPanel({ caption, children, className = "" }: PanelProps) {
   return (
-    <figure className={`on-dark rounded-3xl bg-surface p-5 text-on-surface sm:p-6 ${className}`}>
-      <div className="diagram">{children}</div>
-      {caption ? <figcaption className="mt-3 text-sm text-on-surface-muted">{caption}</figcaption> : null}
+    <figure className={`rounded-2xl border border-line bg-card p-4 sm:p-6 ${className}`}>
+      {/* On a phone the drawing keeps a readable size and scrolls sideways. */}
+      <div className="diagram overflow-x-auto">
+        <div className="min-w-[640px] sm:min-w-0">{children}</div>
+      </div>
+      <p className="mt-2 text-[0.85rem] text-muted sm:hidden">Scroll sideways to see the whole diagram.</p>
+      {caption ? <figcaption className="mt-3 text-[0.92rem] text-muted">{caption}</figcaption> : null}
     </figure>
   );
 }
