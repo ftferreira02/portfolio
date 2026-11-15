@@ -49,12 +49,21 @@ export type SideProject = {
   context: string;
   text: string;
   stack: string[];
+  /** Shown next to the title, e.g. for work that isn't finished. */
+  status?: string;
   /** A page of its own, when there is one. */
   href?: string;
   linkLabel?: string;
 };
 
 export const alsoBuilt: SideProject[] = [
+  {
+    title: "KitSwipe",
+    status: "In progress",
+    context: "Personal project, mobile and web app",
+    text: "A swipe feed for football shirts: save or pass, then rank and share your top five as an image. The For you feed learns your taste from what you save and pass (club, league, colours, kit type, era) and mixes in exploration picks. Community rankings run on Supabase with anonymous sign-in, ordered by the Wilson lower bound so a few votes can't top the board.",
+    stack: ["Expo", "React Native", "TypeScript", "Expo Router", "Reanimated", "Supabase", "PostgreSQL"],
+  },
   {
     title: "Quests@NEI",
     href: "/projects/quests",

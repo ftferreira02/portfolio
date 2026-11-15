@@ -126,7 +126,10 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-7 pt-4 md:grid-cols-2 md:gap-10">
             {alsoBuilt.map((p) => (
               <div key={p.title}>
-                <h3 className="text-lg font-semibold">{p.title}</h3>
+                <h3 className="flex flex-wrap items-baseline gap-x-3 text-lg font-semibold">
+                  {p.title}
+                  {p.status ? <span className="text-sm font-normal text-muted">{p.status}</span> : null}
+                </h3>
                 <p className="mt-1 mb-2 text-meta text-muted">{p.context}</p>
                 <p>{p.text}</p>
                 <TechList items={p.stack} className="mt-2 block text-meta text-muted" />
