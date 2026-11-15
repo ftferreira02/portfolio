@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#22252e"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Georgia, serif" font-size="30" font-weight="600" fill="#ffffff">FF</text>
-  <rect x="18" y="50" width="28" height="4" rx="2" fill="#f9c65d"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .land { fill: #22252e; stroke: #22252e; }
+    .wave { stroke: #1849ed; }
+    @media (prefers-color-scheme: dark) {
+      .land { fill: #eef1f7; stroke: #eef1f7; }
+      .wave { stroke: #7d97ff; }
+    }
+  </style>
+  <path class="land" d="M4 19 11 8.5l3.6 4.8L19 6l9 13z" stroke-width="2" stroke-linejoin="round"/>
+  <path class="wave" d="M2.5 26q3.4-3.6 6.75 0t6.75 0 6.75 0 6.75 0" fill="none" stroke-width="3.4" stroke-linecap="round"/>
 </svg>

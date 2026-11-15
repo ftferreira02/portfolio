@@ -3,6 +3,7 @@ import { MemoriaArchitecture } from "@/components/diagrams/memoria-architecture"
 import { PhotoPath } from "@/components/diagrams/photo-path";
 import { MessageUnderstanding } from "@/components/diagrams/message-understanding";
 import { RetrievalBeforeAfter } from "@/components/diagrams/retrieval-before-after";
+import { BeforeAfter } from "@/components/before-after";
 
 ## The problem
 
@@ -21,6 +22,10 @@ replacing it.
 I replaced the old client with a Next.js app and extended the Django backend for uploads, organisation,
 people and conversational search. All models run on the MEMORIA server, so no photo is sent to an
 outside service.
+
+<Wide>
+  <BeforeAfter />
+</Wide>
 
 <Wide>
   <MemoriaArchitecture />

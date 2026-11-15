@@ -5,6 +5,8 @@ const PORT = 3123;
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
+  // The demos keep pages busy for seconds at a time; more workers than this overload the single test server.
+  workers: 3,
   reporter: "list",
   use: { baseURL: `http://localhost:${PORT}` },
   projects: [

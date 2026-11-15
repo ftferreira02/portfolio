@@ -17,6 +17,9 @@
   --on-surface-muted: #c3c9d6;
   --surface-line: #4a5060;
   --print: #eef1f7;
+  --card: #ffffff;
+  --chip: #e6ecff;
+  --on-accent: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +39,9 @@
     --on-surface-muted: #a3aab9;
     --surface-line: #3d4250;
     --print: #e3e7f0;
+    --card: #1d2029;
+    --chip: #252c45;
+    --on-accent: #10131a;
   }
 }
 
@@ -55,6 +61,9 @@
   --on-surface-muted: #a3aab9;
   --surface-line: #3d4250;
   --print: #e3e7f0;
+  --card: #1d2029;
+  --chip: #252c45;
+  --on-accent: #10131a;
 }
 
 @theme inline {
@@ -70,6 +79,9 @@
   --color-highlight: var(--highlight);
   --color-on-surface: var(--on-surface);
   --color-on-surface-muted: var(--on-surface-muted);
+  --color-card: var(--card);
+  --color-chip: var(--chip);
+  --color-on-accent: var(--on-accent);
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
   --font-display: var(--font-fraunces), Georgia, serif;
 }
@@ -105,6 +117,32 @@ body {
 
 .font-display {
   font-family: var(--font-display);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* The one filled button on a page: the main action. */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+.btn-primary:hover {
+  background: var(--accent-strong);
 }
 
 .link-underline {
@@ -166,7 +204,6 @@ body {
   stroke-width: 2;
   fill: none;
   stroke-dasharray: 5 6;
-  animation: d-flow 1.6s linear infinite;
 }
 .d-chip {
   fill: #1849ed;
@@ -178,16 +215,6 @@ body {
 }
 .d-arrow {
   fill: var(--on-surface-muted);
-}
-@keyframes d-flow {
-  to {
-    stroke-dashoffset: -22;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .d-flow {
-    animation: none;
-  }
 }
 
 /* ---------- Long-form project text ---------- */
@@ -269,4 +296,257 @@ body {
 }
 .prose th {
   font-weight: 700;
+}
+
+/* ---------- Home: MEMORIA demo ---------- */
+.demo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  background: var(--chip);
+  color: var(--text);
+  padding: 3px 4px 3px 10px;
+}
+.demo-chip b {
+  font-weight: 500;
+  color: var(--accent);
+}
+.demo-chip button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+.demo-chip button:hover {
+  background: var(--line);
+  color: var(--text);
+}
+.demo-chip.is-removing,
+.demo-chip.is-removing b,
+.demo-chip.is-removing button {
+  color: #22252e;
+}
+.demo-chip.is-removing {
+  background: var(--highlight);
+}
+.demo-tile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  transition:
+    opacity 0.35s,
+    filter 0.35s,
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.demo-tile.is-out {
+  opacity: 0.16;
+  filter: grayscale(1);
+  transform: scale(0.86);
+}
+.demo-tile.is-hit {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .demo-chip {
+    animation: chip-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .demo-chip.is-removing {
+    animation: chip-shake 0.45s;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-tile {
+    transition: none;
+  }
+  .demo-tile.is-out {
+    transform: none;
+  }
+}
+@keyframes chip-pop {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+}
+@keyframes chip-shake {
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+/* ---------- Home: import demo ---------- */
+.badge {
+  display: inline-block;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.badge-valid {
+  background: #dff3e7;
+  color: #17603d;
+}
+.badge-update {
+  background: var(--chip);
+  color: var(--accent);
+}
+.badge-error {
+  background: #fbe1df;
+  color: #a1271f;
+}
+.badge-done {
+  background: var(--text);
+  color: var(--bg);
+}
+:root[data-theme="dark"] .badge-valid {
+  background: #1d3a2b;
+  color: #8fe0b2;
+}
+:root[data-theme="dark"] .badge-error {
+  background: #45201d;
+  color: #ffaaa3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .badge-valid {
+    background: #1d3a2b;
+    color: #8fe0b2;
+  }
+  :root:not([data-theme="light"]) .badge-error {
+    background: #45201d;
+    color: #ffaaa3;
+  }
+}
+.import-row.is-dup td {
+  background: color-mix(in srgb, #d6453d 10%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .import-row {
+    animation: row-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* ---------- Home: tech names that filter the page ---------- */
+.tech {
+  color: var(--text-muted);
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, var(--text-muted) 50%, transparent);
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.tech:hover {
+  color: var(--text);
+  text-decoration-color: currentColor;
+}
+.tech.is-on {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration-style: solid;
+}
+.tech-scope {
+  transition:
+    opacity 0.35s,
+    filter 0.35s;
+}
+.tech-scope.is-dim {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+.tech-bar[hidden] {
+  display: none;
+}
+
+/* ---------- Home: Madeira to Aveiro map ---------- */
+.route-map .land {
+  fill: color-mix(in srgb, var(--text) 7%, transparent);
+  stroke: color-mix(in srgb, var(--text) 18%, transparent);
+  stroke-width: 1.5;
+}
+.route-map .route {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-dasharray: 6 7;
+  stroke-linecap: round;
+}
+.route-map .place {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 0.3s,
+    fill 0.3s;
+}
+.route-map .place.is-lit {
+  fill: var(--accent);
+  transform: scale(1.6);
+}
+.route-map .m-label {
+  font: 500 12px var(--font-sans);
+  fill: var(--text);
+}
+.route-map .m-sea {
+  font: italic 400 14px var(--font-display);
+  fill: var(--text-muted);
+}
+.route-map .m-note {
+  font: 400 10px var(--font-sans);
+  fill: var(--text-muted);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .route-map .route {
+    stroke-dasharray: 0 400;
+  }
+  .route-map.is-drawn .route {
+    animation: route-draw 2.2s ease-out forwards;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-map .place,
+  .tech-scope {
+    transition: none;
+  }
+}
+@keyframes route-draw {
+  from {
+    stroke-dasharray: 0 400;
+  }
+  to {
+    stroke-dasharray: 6 7;
+  }
+}
+
+/* ---------- Home: hero field ---------- */
+.hero-field {
+  /* Fade out towards the bottom so the field melts into the page. */
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+.hero-large h1 {
+  font-size: clamp(2.5rem, 6vw, 4.4rem);
+}
+
+/* ---------- Site mark ---------- */
+.site-mark-wave {
+  transition: transform 0.4s ease-out;
+}
+.site-mark:hover .site-mark-wave,
+.site-mark:focus-visible .site-mark-wave {
+  transform: translateX(1.5px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-mark-wave {
+    transition: none;
+  }
 }
