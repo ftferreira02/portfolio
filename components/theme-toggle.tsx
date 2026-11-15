@@ -40,7 +40,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label={theme ? `Switch to ${next} theme` : "Switch theme"}
       data-testid="theme-toggle"
-      className={`inline-flex size-11 items-center justify-center rounded-full border border-line text-text transition-colors hover:border-accent hover:text-accent ${className}`}
+      className={`inline-flex size-11 items-center justify-center rounded-[10px] border border-line text-text transition-colors hover:border-accent hover:text-accent ${className}`}
     >
       {/* Sun shows in dark mode, moon in light mode; both hidden until mounted to avoid a mismatch. */}
       <svg

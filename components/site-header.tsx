@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import { site } from "@/content/site";
+import { NavDisclosure } from "./nav-disclosure";
 import { ThemeToggle } from "./theme-toggle";
 
 // The bar only appears once the page has scrolled; at the very top the header sits on the page itself.
@@ -32,7 +33,7 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6">
-        <Link href="/" aria-label={`${site.name}, home`} className="site-mark group flex items-center gap-2.5">
+        <Link href="/" aria-label={`${site.name}, home`} className="site-mark group flex min-w-0 items-center gap-2">
           {/* The site's mark: Madeira, an island over the Atlantic. */}
           <svg aria-hidden="true" viewBox="0 0 32 32" className="size-7 shrink-0">
             <path d="M4.5 19.5 11 9.5l3.6 4.6L19 7l8.5 12.5z" fill="var(--text)" stroke="var(--text)" strokeWidth="2" strokeLinejoin="round" />
@@ -46,12 +47,12 @@ export function SiteHeader() {
             />
           </svg>
           <span
-            className={`font-display text-xl font-semibold transition-opacity duration-200 ${hideName ? "invisible opacity-0" : "opacity-100"}`}
+            className={`truncate font-display text-lg font-medium transition-opacity duration-200 sm:text-xl ${hideName ? "invisible opacity-0" : "opacity-100"}`}
           >
             {site.name}
           </span>
         </Link>
-        <nav aria-label="Main" className="flex items-center gap-1 sm:gap-2">
+        <nav aria-label="Main" className="flex shrink-0 items-center gap-1 sm:gap-2">
           <ul className="hidden items-center gap-1 sm:flex">
             {nav.map((item) => (
               <li key={item.href}>
@@ -72,8 +73,9 @@ export function SiteHeader() {
               </a>
             </li>
           </ul>
-          <details className="relative sm:hidden">
-            <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-full border border-line [&::-webkit-details-marker]:hidden">
+          <NavDisclosure className="relative sm:hidden"
+            summaryClassName="flex size-11 cursor-pointer list-none items-center justify-center rounded-[10px] border border-line [&::-webkit-details-marker]:hidden"
+            summary={<>
               <span className="sr-only">Menu</span>
               <svg
                 aria-hidden="true"
@@ -87,7 +89,7 @@ export function SiteHeader() {
               >
                 <path d="M4 7h16M4 12h16M4 17h16" />
               </svg>
-            </summary>
+            </>}>
             <ul className="absolute right-0 mt-2 w-44 rounded-xl border border-line bg-bg p-2 shadow-lg">
               {nav.map((item) => (
                 <li key={item.href}>
@@ -108,7 +110,7 @@ export function SiteHeader() {
                 </a>
               </li>
             </ul>
-          </details>
+          </NavDisclosure>
           <ThemeToggle className="ml-1" />
         </nav>
       </div>

@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-5 text-sm text-muted sm:px-6">
         <p>
-          {site.name}, {site.location}.
+          {site.name}, {site.location}
         </p>
         <ul className="flex flex-wrap gap-5">
           <li>

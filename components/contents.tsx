@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { NavDisclosure } from "./nav-disclosure";
 import { slug } from "@/lib/slug";
 
 /** "On this page": the sections of a project page, with the one being read marked. */
@@ -46,5 +47,28 @@ export function Contents({ sections }: { sections: string[] }) {
         })}
       </ul>
     </nav>
+  );
+}
+
+/** Compact section navigation for phones and tablets. */
+export function MobileContents({ sections }: { sections: string[] }) {
+  return (
+    <NavDisclosure
+      className="mt-6 rounded-xl border border-line xl:hidden"
+      summaryClassName="cursor-pointer px-4 py-3 font-medium marker:text-accent"
+      summary="On this page"
+    >
+      <nav aria-label="On this page" className="border-t border-line px-4 py-2">
+        <ul>
+          {sections.map((section) => (
+            <li key={section}>
+              <a href={`#${slug(section)}`} className="flex min-h-11 items-center py-2 text-muted hover:text-accent">
+                {section}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </NavDisclosure>
   );
 }

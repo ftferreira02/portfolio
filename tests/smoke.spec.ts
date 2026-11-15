@@ -71,22 +71,14 @@ test("metadata files are served", async ({ request }) => {
 
 test("the MEMORIA demo plays when scrolled to and widens the results as filters come off", async ({ page }) => {
   await page.goto("/");
-  await page.locator("form[aria-label='MEMORIA demo']").scrollIntoViewIfNeeded();
+  // Scroll the whole demo card into view: it only starts once most of it is on screen.
+  await page.locator("form[aria-label='MEMORIA demo']").locator("..").evaluate((el) => el.scrollIntoView({ block: "center" }));
   const found = page.locator("p", { hasText: /photos? across/ });
   await expect(page.getByText("I understood:")).toBeVisible({ timeout: 8000 });
   await expect(found).toContainText("2 photos", { timeout: 8000 });
   await expect(found).toContainText("4 photos", { timeout: 8000 });
   await page.getByRole("button", { name: "Pause" }).first().click();
   await expect(page.getByRole("button", { name: "Play demo" })).toBeVisible();
-});
-
-test("clicking a technology fades the projects that don't use it", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Django", exact: true }).first().click();
-  await expect(page.locator(".tech-bar")).toContainText("Django: used in 1 project");
-  await expect(page.locator(".tech-scope.is-dim")).toHaveCount(3);
-  await page.getByRole("button", { name: "Clear" }).click();
-  await expect(page.locator(".tech-scope.is-dim")).toHaveCount(0);
 });
 
 test("the import demo starts on the result, replays once in view, and stops", async ({ page }) => {
@@ -113,7 +105,7 @@ test.describe("with reduced motion", () => {
   });
 });
 
-test("keyboard focus survives removing a filter and clearing a technology", async ({ page }) => {
+test("keyboard focus survives removing a filter", async ({ page }) => {
   await page.goto("/");
   await page.locator("#demo-q").fill("padel with friends last summer");
   await page.locator("#demo-q").press("Enter");
@@ -121,11 +113,6 @@ test("keyboard focus survives removing a filter and clearing a technology", asyn
   await page.keyboard.press("Enter");
   await expect(page.locator(":focus")).toHaveAttribute("aria-label", /Remove \w+ filter/);
 
-  const django = page.getByRole("button", { name: "Django", exact: true }).first();
-  await django.focus();
-  await page.keyboard.press("Enter");
-  await page.getByRole("button", { name: "Clear" }).click();
-  await expect(django).toBeFocused();
 });
 
 for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 3], ["/projects/quests", 3]] as const) {
@@ -168,3 +155,56 @@ for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 1
     }
   });
 }
+
+
+test("mobile menu dismisses after selection, Escape, and clicking outside", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const menu = page.locator("header details");
+  const toggle = menu.locator("summary");
+  await toggle.click();
+  await menu.getByRole("link", { name: "Work", exact: true }).click();
+  await expect(menu).not.toHaveAttribute("open", "");
+  await expect(page).toHaveURL(/#work$/);
+  await toggle.click();
+  await page.keyboard.press("Escape");
+  await expect(menu).not.toHaveAttribute("open", "");
+  await expect(toggle).toBeFocused();
+  await toggle.click();
+  await page.getByRole("heading", { name: "MEMORIA", exact: true }).click({ position: { x: 2, y: 2 } });
+  await expect(menu).not.toHaveAttribute("open", "");
+});
+
+test("mobile case-study contents navigates and dismisses", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/projects/memoria");
+  const contents = page.locator("article header details");
+  await contents.locator("summary").click();
+  await contents.getByRole("link", { name: "Results", exact: true }).click();
+  await expect(contents).not.toHaveAttribute("open", "");
+  await expect(page).toHaveURL(/#results$/);
+  await expect(page.getByRole("heading", { name: "Results", exact: true })).toBeInViewport();
+});
+
+test("narrow home screens keep navigation inside the viewport", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [320, 360, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    for (const scrolled of [false, true]) {
+      if (scrolled) await page.locator("#work").scrollIntoViewIfNeeded();
+      const layout = await page.evaluate(() => ({
+        width: innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        overflowing: [...document.querySelectorAll("body *")].filter((el) => el.getBoundingClientRect().right > innerWidth).slice(0, 12).map((el) => `${el.tagName}.${el.className}`),
+      }));
+      expect(layout.scrollWidth, JSON.stringify({ scrolled, ...layout })).toBeLessThanOrEqual(width);
+      const navigation = page.getByRole("navigation", { name: "Main", exact: true });
+      expect(await navigation.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        return bounds.left >= 0 && bounds.right <= innerWidth;
+      })).toBe(true);
+    }
+  }
+});

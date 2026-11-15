@@ -139,8 +139,8 @@ export function ImportDemo() {
   const finished = step === 3;
 
   return (
-    <div ref={box} className="min-w-0 rounded-[22px] border border-line bg-card p-3.5 tabular-nums">
-      <ol className="mb-3.5 flex gap-1.5 text-sm" aria-label="Import steps">
+    <div ref={box} className="min-w-0 rounded-[20px] border border-line bg-card p-3 tabular-nums">
+      <ol className="mb-3 flex gap-1.5 text-sm" aria-label="Import steps">
         {steps.map((s, i) => (
           <li
             key={s}
@@ -152,11 +152,11 @@ export function ImportDemo() {
           </li>
         ))}
       </ol>
-      <div className="mb-1.5 flex justify-between text-[0.85rem] text-muted">
+      <div className="mb-1.5 flex justify-between text-sm text-muted">
         <span className="font-medium text-text">{file}</span>
         <span>{rows.length ? `${rows.length} rows` : ""}</span>
       </div>
-      <table className="w-full table-fixed border-collapse text-[0.85rem]">
+      <table className="w-full table-fixed border-collapse text-sm">
         <thead>
           <tr className="border-b border-line text-left text-muted">
             <th scope="col" className="w-[26%] px-1.5 py-1 font-medium sm:w-[22%]">Tax no.</th>
@@ -190,16 +190,16 @@ export function ImportDemo() {
           )}
         </tbody>
       </table>
-      <p className="mt-3 min-h-[4.5em] text-[0.92rem] sm:min-h-[3em]">{message}</p>
+      <p className="mt-3 min-h-[4.5em] text-meta sm:min-h-[3em]">{message}</p>
       <p className="sr-only" aria-live="polite">
         {announcement}
       </p>
-      <div className="mt-2.5 flex items-baseline justify-between gap-3 text-[0.85rem] text-muted">
+      <div className="mt-3 flex items-baseline justify-between gap-3 text-sm text-muted">
         <span>Example data, real rules: duplicates in a file block the import; existing records are updated.</span>
         <button
           type="button"
           onClick={() => (playing ? stop() : play(true))}
-          className="shrink-0 rounded-full border border-line px-3 py-0.5 hover:text-text"
+          className="shrink-0 rounded-[10px] border border-line px-3 py-1 transition-colors hover:text-text"
         >
           {playing ? "Pause" : finished ? (started ? "Play again" : "Play") : "Restart"}
         </button>

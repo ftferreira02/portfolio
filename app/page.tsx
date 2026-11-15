@@ -4,7 +4,7 @@ import { HeroShell } from "@/components/home/hero-shell";
 import { ImportDemo } from "@/components/home/import-demo";
 import { MemoriaDemo } from "@/components/home/memoria-demo";
 import { Route, type Stop } from "@/components/home/route";
-import { TechList, TechProvider, TechScope } from "@/components/home/tech";
+import { TechList } from "@/components/home/tech";
 import { alsoBuilt, education, jobs } from "@/content/experience";
 import { getProject } from "@/content/projects";
 import { site } from "@/content/site";
@@ -26,7 +26,6 @@ const personJsonLd = {
 
 const memoria = getProject("memoria");
 const edufiable = getProject("edufiable");
-const memoriaUses = [...memoria.stack, "Python"];
 
 const [found, sus, people] = memoria.stats;
 
@@ -46,11 +45,11 @@ const stops: Stop[] = [
   .sort((x, y) => y.since.localeCompare(x.since));
 
 const h2 = "font-display text-[clamp(1.7rem,3.4vw,2.4rem)] font-medium tracking-[-0.015em]";
-const h3 = "font-display text-[1.9rem] font-semibold tracking-[-0.015em]";
+const h3 = "font-display text-[1.9rem] font-medium tracking-[-0.015em]";
 
 export default function Home() {
   return (
-    <TechProvider scopes={[memoriaUses, edufiable.stack, ...alsoBuilt.map((p) => p.stack)]}>
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
 
       {/* Hero: who I am, over a field that reacts to the pointer */}
@@ -68,32 +67,32 @@ export default function Home() {
             Download CV
           </a>
         </div>
-        <p className="mt-7 flex items-baseline gap-2.5 text-[0.95rem] text-muted before:size-2 before:shrink-0 before:translate-y-[-1px] before:rounded-full before:bg-accent before:content-['']">
+        <p className="mt-7 flex items-baseline gap-2.5 text-meta text-muted before:size-2 before:shrink-0 before:translate-y-[-1px] before:rounded-full before:bg-accent before:content-['']">
           {site.availability}
         </p>
       </HeroShell>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* Work */}
-        <section id="work" aria-labelledby="work-title" className="pt-[88px]">
-          <h2 id="work-title" className={h2}>
-            Things I&apos;ve built
+        <section id="work" aria-labelledby="work-title">
+          <h2 id="work-title" className="sr-only">
+            Selected work
           </h2>
 
-          <TechScope uses={memoriaUses} className="grid items-start gap-6 pt-5 pb-12 lg:grid-cols-2 lg:gap-12">
+          <div className="grid grid-cols-1 items-start gap-6 pt-8 pb-12 lg:grid-cols-2 lg:gap-12">
             <div>
               <h3 className={h3}>{memoria.title}</h3>
-              <p className="mt-0.5 mb-3.5 text-[0.95rem] text-muted tabular-nums">
+              <p className="mt-1 mb-4 text-meta text-muted tabular-nums">
                 {memoria.context.replace(" · ", ", ")}, {memoria.period}
               </p>
-              <p className="max-w-[58ch]">{memoria.summary}</p>
-              <p className="my-[18px] max-w-[58ch] font-display text-xl leading-snug tabular-nums">
-                I tested it with <b className="font-semibold">{people.value} people</b> on their own photo libraries. They
-                completed <b className="font-semibold">{found.value.replace("/", " of ")}</b> search tasks within three
-                minutes and gave it a mean score of <b className="font-semibold">{sus.value}</b> on the System Usability Scale.
+              <p className="max-w-[58ch]">A personal photo app that finds moments from a description. I rebuilt the frontend and extended the backend for uploads, photo organisation, and search with editable filters.</p>
+              <p className="my-5 max-w-[58ch] font-display text-xl leading-snug tabular-nums">
+                <b className="font-medium">{found.value}</b> study tasks completed within 3 minutes
+                {" · "}<b className="font-medium">{sus.value}</b> mean SUS score
+                {" · "}<b className="font-medium">{people.value}</b> participants using their own libraries.
               </p>
-              <TechList items={memoria.stack} className="block text-[0.9rem] text-muted" />
-              <div className="mt-3.5 flex flex-wrap gap-x-6 gap-y-2 font-medium">
+              <TechList items={memoria.stack} className="block text-meta text-muted" />
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-medium">
                 <Link href={`/projects/${memoria.slug}`} className="underline underline-offset-4 hover:text-accent">
                   {memoria.linkLabel}
                 </Link>
@@ -105,38 +104,38 @@ export default function Home() {
               </div>
             </div>
             <MemoriaDemo />
-          </TechScope>
+          </div>
 
-          <TechScope uses={edufiable.stack} className="grid items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+          <div className="grid grid-cols-1 items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
             <div>
               <h3 className={h3}>{edufiable.title}</h3>
-              <p className="mt-0.5 mb-3.5 text-[0.95rem] text-muted tabular-nums">
+              <p className="mt-1 mb-4 text-meta text-muted tabular-nums">
                 {edufiable.context.replace(" · ", ", ")}, {edufiable.period}
               </p>
-              <p className="max-w-[58ch]">{edufiable.summary}</p>
-              <TechList items={edufiable.stack} className="mt-3.5 block text-[0.9rem] text-muted" />
-              <div className="mt-3.5 font-medium">
+              <p className="max-w-[58ch]">I built academic-record validation and batch imports for a university diploma platform, plus the flow students use to claim a verifiable diploma into their wallet.</p>
+              <TechList items={edufiable.stack} className="mt-4 block text-meta text-muted" />
+              <div className="mt-4 font-medium">
                 <Link href={`/projects/${edufiable.slug}`} className="underline underline-offset-4 hover:text-accent">
                   {edufiable.linkLabel}
                 </Link>
               </div>
             </div>
             <ImportDemo />
-          </TechScope>
+          </div>
 
-          <div className="grid gap-7 pt-4 md:grid-cols-2 md:gap-10">
+          <div className="grid grid-cols-1 gap-7 pt-4 md:grid-cols-2 md:gap-10">
             {alsoBuilt.map((p) => (
-              <TechScope key={p.title} uses={p.stack}>
-                <h3 className="text-[1.1rem] font-bold">{p.title}</h3>
-                <p className="mt-0.5 mb-2 text-[0.92rem] text-muted">{p.context}</p>
+              <div key={p.title}>
+                <h3 className="text-lg font-semibold">{p.title}</h3>
+                <p className="mt-1 mb-2 text-meta text-muted">{p.context}</p>
                 <p>{p.text}</p>
-                <TechList items={p.stack} className="mt-2 block text-[0.9rem] text-muted" />
+                <TechList items={p.stack} className="mt-2 block text-meta text-muted" />
                 {p.href ? (
                   <Link href={p.href} className="mt-2 inline-flex min-h-11 items-center font-medium underline underline-offset-4 hover:text-accent">
                     {p.linkLabel}
                   </Link>
                 ) : null}
-              </TechScope>
+              </div>
             ))}
           </div>
         </section>
@@ -155,7 +154,7 @@ export default function Home() {
         {/* Contact */}
         <section id="contact" aria-labelledby="contact-title" className="pt-24 pb-16">
           <h2 id="contact-title" className="font-display text-[clamp(2rem,5vw,3.4rem)] leading-[1.05] font-medium tracking-[-0.02em]">
-            Let&apos;s talk.
+            Let&apos;s talk
           </h2>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a href={`mailto:${site.email}`} className="font-display text-[clamp(1.1rem,3.4vw,1.6rem)] break-all underline underline-offset-4 hover:text-accent">
@@ -170,6 +169,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-    </TechProvider>
+    </>
   );
 }

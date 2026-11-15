@@ -4,17 +4,19 @@ import { useEffect, useRef } from "react";
 
 /*
  * The hero's background: a faint field of scattered "photos". Wherever the pointer goes, the ones nearby fall into
- * a tidy grid and take on colour, which is what MEMORIA does to a photo library. When nobody is pointing, a slow
- * invisible pointer wanders so the page is never completely still. Purely decorative: it sits behind the text and
- * takes no input of its own.
+ * a tidy grid and take on colour, which is what MEMORIA does to a photo library. When nobody is pointing, one patch
+ * on the empty side rests tidy, so the idea reads without a mouse. Nothing moves on its own. Purely decorative: it
+ * sits behind the text and takes no input of its own.
  */
 
 const CELL = 58;
 const TILE = 30;
 const RADIUS = 190;
 const TINTS = ["#1849ed", "#7cc7f2", "#ffb38a", "#a6dcae", "#c9d3ea", "#f9c65d"];
+// On the dark page the same hues, lifted, so they read as colour instead of mud.
+const TINTS_DARK = ["#7d97ff", "#8fd3f7", "#ffc2a0", "#b5e6bc", "#d5dcf0", "#fbd27a"];
 
-type Tile = { gx: number; gy: number; sx: number; sy: number; rot: number; phase: number; tint: string; t: number };
+type Tile = { gx: number; gy: number; sx: number; sy: number; rot: number; tint: number; t: number };
 
 function hash(n: number) {
   const x = Math.sin(n * 127.1) * 43758.5453;
@@ -34,11 +36,14 @@ export function HeroField() {
     let h = 0;
     let tiles: Tile[] = [];
     let idle = "rgba(34, 37, 46, 0.07)";
+    let dark = false;
 
     const readTheme = () => {
       const text = getComputedStyle(document.documentElement).getPropertyValue("--text").trim();
       const n = parseInt(text.replace("#", "").slice(0, 6), 16);
       idle = `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, 0.07)`;
+      // Light text means a dark page.
+      dark = ((n >> 16) & 255) + ((n >> 8) & 255) + (n & 255) > 382;
     };
 
     const layout = () => {
@@ -65,8 +70,7 @@ export function HeroField() {
             sx: gx + (hash(i) - 0.5) * CELL * 1.5,
             sy: gy + (hash(i + 7) - 0.5) * CELL * 1.5,
             rot: (hash(i + 13) - 0.5) * 1.3,
-            phase: hash(i + 29) * Math.PI * 2,
-            tint: TINTS[Math.floor(hash(i + 41) * TINTS.length)],
+            tint: Math.floor(hash(i + 41) * TINTS.length),
             t: 0,
           });
         }
@@ -84,17 +88,14 @@ export function HeroField() {
 
     const draw = (now: number) => {
       ctx.clearRect(0, 0, w, h);
-      // With reduced motion nothing moves on its own: no drift, and the resting tidy patch stays put.
-      // Tiles still answer the pointer, since that movement is the visitor's own.
-      const time = reduce ? 0 : now / 1000;
-      // With no real pointer for a while, a slow wanderer keeps one patch tidy.
+      // Tiles only move in answer to the visitor's pointer.
       let px = pointer.x;
       let py = pointer.y;
       if (now - pointer.seen > 2500) {
-        // On wide screens it stays on the empty right side; on phones, below the text.
+        // No pointer for a while: one patch rests tidy, on the empty right side on wide screens, below the text on phones.
         const wide = w > 900;
-        px = w * (wide ? 0.68 + 0.2 * Math.sin(time * 0.23) : 0.5 + 0.3 * Math.sin(time * 0.23));
-        py = h * (wide ? 0.5 + 0.3 * Math.sin(time * 0.31 + 1.3) : 0.86 + 0.06 * Math.sin(time * 0.31 + 1.3));
+        px = w * (wide ? 0.68 : 0.5);
+        py = h * (wide ? 0.62 : 0.86);
       }
       // Keep the field quieter behind the text on wide screens.
       const textEdge = w > 900 ? w * 0.5 : 0;
@@ -104,9 +105,8 @@ export function HeroField() {
         const target = Math.max(0, 1 - d / RADIUS);
         tile.t += (target - tile.t) * (reduce ? 0.22 : 0.09);
         const k = tile.t * tile.t * (3 - 2 * tile.t);
-        const drift = reduce ? 0 : 1;
-        const x = tile.sx + Math.sin(time * 0.4 + tile.phase) * 5 * drift + (tile.gx - tile.sx) * k;
-        const y = tile.sy + Math.cos(time * 0.33 + tile.phase) * 5 * drift + (tile.gy - tile.sy) * k;
+        const x = tile.sx + (tile.gx - tile.sx) * k;
+        const y = tile.sy + (tile.gy - tile.sy) * k;
         const quiet = textEdge ? 0.22 + 0.78 * Math.min(1, Math.max(0, (tile.gx - textEdge * 0.8) / (textEdge * 0.5))) : 0.5;
 
         ctx.save();
@@ -118,11 +118,11 @@ export function HeroField() {
         ctx.fillStyle = idle;
         ctx.fill();
         if (k > 0.02) {
-          ctx.globalAlpha = k * 0.85 * quiet;
-          ctx.fillStyle = tile.tint;
+          ctx.globalAlpha = k * (dark ? 1 : 0.85) * Math.min(1, quiet * (dark ? 1.35 : 1));
+          ctx.fillStyle = (dark ? TINTS_DARK : TINTS)[tile.tint];
           ctx.fill();
           // A hint of a picture: a horizon and a sun.
-          ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+          ctx.fillStyle = dark ? "rgba(16, 19, 26, 0.55)" : "rgba(255, 255, 255, 0.75)";
           ctx.fillRect(-TILE / 2 + 5, 4, TILE - 10, 2.5);
           ctx.beginPath();
           ctx.arc(TILE / 2 - 9, -TILE / 2 + 9, 3, 0, Math.PI * 2);

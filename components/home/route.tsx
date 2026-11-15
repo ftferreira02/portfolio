@@ -87,7 +87,7 @@ export function Route({ stops }: { stops: Stop[] }) {
             className="grid gap-x-7 gap-y-1 py-3 sm:grid-cols-[170px_1fr]"
           >
             <span
-              className={`text-[0.95rem] tabular-nums ${lit === s.place ? "text-accent" : "text-muted"}`}
+              className={`text-meta tabular-nums ${lit === s.place ? "text-accent" : "text-muted"}`}
             >
               {s.when}
             </span>
@@ -97,10 +97,10 @@ export function Route({ stops }: { stops: Stop[] }) {
                 alt={`${s.org} logo`}
                 width={36}
                 height={36}
-                className="mt-0.5 size-9 shrink-0 rounded-lg border border-line bg-white object-contain"
+                className="size-9 shrink-0 rounded-lg border border-line bg-white object-contain"
               />
               <span>
-                <b className="font-semibold">{s.title}</b>
+                <b className="font-medium">{s.title}</b>
                 {s.note ? (
                   <>
                     <br />

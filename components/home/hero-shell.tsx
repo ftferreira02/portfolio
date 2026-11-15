@@ -6,7 +6,7 @@ export function HeroShell({ children }: { children: React.ReactNode }) {
     // Pulled up under the (transparent) header so the field runs to the top of the page.
     <section className="relative -mt-16 overflow-hidden pt-16">
       <HeroField />
-      <div className="relative mx-auto flex min-h-[calc(100svh-4rem)] max-w-6xl flex-col justify-center px-4 py-16 sm:px-6">
+      <div className="relative mx-auto flex max-w-6xl flex-col justify-center px-4 pt-12 pb-10 sm:px-6 sm:pt-16 sm:pb-12">
         <div className="hero-large max-w-[38rem]">{children}</div>
       </div>
     </section>

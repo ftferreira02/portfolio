@@ -22,7 +22,7 @@ export function Screenshot({ caption, narrow = false, ...shot }: Shot & { captio
   const figure = (
     <figure className={`m-0 ${narrow ? "max-w-[24rem]" : ""}`}>
       <Shot shot={shot} sizes={narrow ? "384px" : "(min-width: 960px) 896px, 100vw"} />
-      <figcaption className="mt-2.5 text-[0.92rem] text-muted">{caption}</figcaption>
+      <figcaption className="mt-2.5 text-meta text-muted">{caption}</figcaption>
     </figure>
   );
   // In the text column, .prose sets the width of its direct children, so a narrow figure needs a wrapper.
@@ -38,7 +38,7 @@ export function ScreenshotPair({ shots, caption }: { shots: [Shot, Shot]; captio
           <Shot key={s.src} shot={s} sizes="(min-width: 640px) 280px, 45vw" />
         ))}
       </div>
-      <figcaption className="mt-2.5 text-[0.92rem] text-muted">{caption}</figcaption>
+      <figcaption className="mt-2.5 text-meta text-muted">{caption}</figcaption>
     </figure>
   );
 }

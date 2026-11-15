@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Project } from "@/content/projects";
 import { projects } from "@/content/projects";
-import { Contents } from "./contents";
+import { Contents, MobileContents } from "./contents";
 
 const link = "underline underline-offset-4 hover:text-accent";
 
@@ -11,7 +11,7 @@ export function ProjectPage({ project, children }: { project: Project; children:
   return (
     <article className="mx-auto max-w-6xl px-4 sm:px-6">
       <header className="pt-5 md:pt-11">
-        <Link href="/#work" className="inline-flex min-h-11 items-center text-[0.95rem] text-muted underline-offset-4 hover:text-text hover:underline">
+        <Link href="/#work" className="inline-flex min-h-11 items-center text-meta text-muted underline-offset-4 hover:text-text hover:underline">
           All work
         </Link>
         <h1 className="mt-2 font-display text-[clamp(2.5rem,6vw,4.4rem)] leading-[1.04] font-medium tracking-[-0.02em]">
@@ -25,13 +25,13 @@ export function ProjectPage({ project, children }: { project: Project; children:
           <dl className="mt-8 flex flex-wrap gap-x-12 gap-y-5">
             {project.stats.map((s) => (
               <div key={s.label} className="flex flex-col-reverse">
-                <dt className="text-[0.92rem] text-muted">{s.label}</dt>
+                <dt className="text-meta text-muted">{s.label}</dt>
                 <dd className="font-display text-[2.1rem] leading-tight font-medium tabular-nums">{s.value}</dd>
               </div>
             ))}
           </dl>
         ) : null}
-        <p className="mt-7 max-w-[60ch] text-[0.9rem] text-muted">{project.stack.join(", ")}</p>
+        <p className="mt-7 max-w-[60ch] text-meta text-muted">{project.stack.join(", ")}</p>
         {project.links?.length ? (
           <ul className="mt-1 flex flex-wrap gap-x-6 font-medium">
             {project.links.map((l) => (
@@ -43,6 +43,7 @@ export function ProjectPage({ project, children }: { project: Project; children:
             ))}
           </ul>
         ) : null}
+        <MobileContents sections={project.sections} />
       </header>
 
       <div className="pb-20 xl:grid xl:grid-cols-[minmax(0,56rem)_1fr] xl:gap-14">
@@ -54,7 +55,7 @@ export function ProjectPage({ project, children }: { project: Project; children:
 
       {other ? (
         <nav aria-label="Next project" className="border-t border-line py-12">
-          <p className="text-[0.95rem] text-muted">Next project</p>
+          <p className="text-meta text-muted">Next project</p>
           <Link
             href={`/projects/${other.slug}`}
             className="mt-1 inline-block font-display text-[clamp(1.9rem,4vw,2.6rem)] font-medium tracking-[-0.015em] hover:text-accent"

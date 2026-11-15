@@ -84,6 +84,9 @@
   --color-on-accent: var(--on-accent);
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
   --font-display: var(--font-fraunces), Georgia, serif;
+  --text-meta: 0.9375rem;
+  --text-meta--line-height: 1.5;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* ---------- Base ---------- */
@@ -131,11 +134,12 @@ p {
   align-items: center;
   min-height: 50px;
   padding: 0 28px;
-  border-radius: 999px;
+  border-radius: 10px;
   background: var(--accent);
   color: var(--on-accent);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 500;
+  transition: background-color 0.15s;
 }
 .btn-primary:hover {
   background: var(--accent-strong);
@@ -208,7 +212,7 @@ p {
 .d-chip-text {
   fill: var(--on-accent);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .d-arrow {
   fill: var(--text-muted);
@@ -234,7 +238,7 @@ p {
 }
 .prose h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.4rem;
   line-height: 1.2;
   margin-top: 2em;
@@ -271,7 +275,7 @@ p {
   color: var(--text-muted);
 }
 .prose strong {
-  font-weight: 700;
+  font-weight: 600;
 }
 .prose code {
   font-size: 0.9em;
@@ -294,7 +298,7 @@ p {
   vertical-align: top;
 }
 .prose > table th {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* ---------- Home: MEMORIA demo ---------- */
@@ -337,7 +341,7 @@ p {
   transition:
     opacity 0.35s,
     filter 0.35s,
-    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transform 0.45s var(--ease-out);
 }
 .demo-tile.is-out {
   opacity: 0.16;
@@ -382,8 +386,8 @@ p {
 .badge {
   display: inline-block;
   border-radius: 6px;
-  padding: 1px 7px;
-  font-size: 0.78rem;
+  padding: 0 8px;
+  font-size: 0.8125rem;
   font-weight: 500;
 }
 .badge-valid {
@@ -425,44 +429,14 @@ p {
 }
 @media (prefers-reduced-motion: no-preference) {
   .import-row {
-    animation: row-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: row-in 0.25s var(--ease-out);
   }
 }
 @keyframes row-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-4px);
   }
-}
-
-/* ---------- Home: tech names that filter the page ---------- */
-.tech {
-  color: var(--text-muted);
-  text-decoration: underline dotted;
-  text-decoration-color: color-mix(in srgb, var(--text-muted) 50%, transparent);
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-.tech:hover {
-  color: var(--text);
-  text-decoration-color: currentColor;
-}
-.tech.is-on {
-  color: var(--accent);
-  font-weight: 500;
-  text-decoration-style: solid;
-}
-.tech-scope {
-  transition:
-    opacity 0.35s,
-    filter 0.35s;
-}
-.tech-scope.is-dim {
-  opacity: 0.5;
-  filter: grayscale(1);
-}
-.tech-bar[hidden] {
-  display: none;
 }
 
 /* ---------- Home: Madeira to Aveiro map ---------- */
@@ -485,7 +459,7 @@ p {
   transform-box: fill-box;
   transform-origin: center;
   transition:
-    transform 0.3s,
+    transform 0.3s var(--ease-out),
     fill 0.3s;
 }
 .route-map .place.is-lit {
@@ -513,8 +487,7 @@ p {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .route-map .place,
-  .tech-scope {
+  .route-map .place {
     transition: none;
   }
 }
