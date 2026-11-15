@@ -7,7 +7,7 @@ const link = "underline underline-offset-4 hover:text-accent";
 
 /** Shared frame for a long-form project page: header, MDX body, next project. */
 export function ProjectPage({ project, children }: { project: Project; children: React.ReactNode }) {
-  const other = projects.find((p) => p.slug !== project.slug);
+  const other = projects[(projects.indexOf(project) + 1) % projects.length];
   return (
     <article className="mx-auto max-w-6xl px-4 sm:px-6">
       <header className="pt-5 md:pt-11">

@@ -4,6 +4,7 @@ const pages = [
   { path: "/", h1: /Hi, I.m Francisco/ },
   { path: "/projects/memoria", h1: "MEMORIA" },
   { path: "/projects/edufiable", h1: "Edufiable" },
+  { path: "/projects/quests", h1: "Quests@NEI" },
 ];
 
 for (const { path, h1 } of pages) {
@@ -127,7 +128,7 @@ test("keyboard focus survives removing a filter and clearing a technology", asyn
   await expect(django).toBeFocused();
 });
 
-for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 3]] as const) {
+for (const [path, count] of [["/projects/memoria", 4], ["/projects/edufiable", 3], ["/projects/quests", 3]] as const) {
   test(`${path}: every "On this page" link points at a heading`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(path);

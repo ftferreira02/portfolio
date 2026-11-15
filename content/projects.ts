@@ -1,7 +1,7 @@
 export type Stat = { value: string; label: string };
 
 export type Project = {
-  slug: "memoria" | "edufiable";
+  slug: "memoria" | "edufiable" | "quests";
   title: string;
   context: string;
   period: string;
@@ -48,6 +48,20 @@ export const projects: Project[] = [
     sections: ["The problem", "What I built", "What it changed"],
     stack: ["Next.js", "TypeScript", "Express", "Prisma", "PostgreSQL"],
     linkLabel: "More about Edufiable",
+  },
+  {
+    slug: "quests",
+    title: "Quests@NEI",
+    context: "NEI, Informatics Students' Association · University of Aveiro",
+    period: "Feb – Jul 2026",
+    summary:
+      "A platform that rewards students for taking part in the association's activities. On the team's web app, I built the activity calendar and activity pages, the QR check-in for organisers, the first leaderboard and a history of points earned and spent.",
+    description:
+      "The parts of Quests@NEI, a student association's activity and rewards platform, that I built: the activity calendar, QR check-in, points history and background session renewal.",
+    stats: [],
+    sections: ["The problem", "What I built", "Where it stands"],
+    stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI", "FastAPI"],
+    linkLabel: "More about Quests@NEI",
   },
 ];
 

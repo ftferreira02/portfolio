@@ -1,0 +1,125 @@
+import { Wide } from "@/components/project-page";
+import { Screenshot, ScreenshotPair } from "@/components/screenshot";
+
+## The problem
+
+NEI, the informatics students' association at the University of Aveiro, runs workshops, talks, game nights
+and hackathons all year. Quests@NEI turns taking part into a game: students earn points for the
+activities they attend, climb a leaderboard and spend points in the association's shop.
+
+For that to work, three things have to be easy. A student has to find what's on and when. An organiser
+has to record who turned up while a queue forms at the door. And a student has to see where their
+points came from, or the points mean nothing.
+
+It's a team project with several students. I worked on it from February to July 2026, mostly on the web app
+(React, TypeScript, TanStack Router and Query, Tailwind CSS, Radix UI).
+
+## What I built
+
+### Finding an activity
+
+I built the activities page: a monthly calendar where you pick a day and see what's on, and a card view
+you can search. I later split the large route files into smaller components, which made the calendar and
+cards reusable.
+
+<Wide>
+  <Screenshot
+    src="/images/quests/calendar.webp"
+    width={1600}
+    height={1274}
+    alt="A monthly calendar for November 2026 with an activity on several days. Sunday the 15th is selected, and below the calendar the workshop on that day is shown with its time and reward of 200 points."
+    caption="The calendar with a day selected. Sample data; the association works in Portuguese, so activity descriptions are too."
+  />
+</Wide>
+
+Each activity then got its own page instead of a dialog, with the reward, the time and place, and the
+registration settings. Organisers create activities with an optional registration link, capacity,
+deadline and waitlist, all checked in the form before anything is sent.
+
+<Wide>
+  <Screenshot
+    src="/images/quests/activity-page.webp"
+    width={1792}
+    height={640}
+    alt="The top of an activity page: a large title, Workshop Docker & Kubernetes, with the date and room, an Upcoming label, and a card showing a reward of 200 points plus a 50 point bonus."
+    caption="The top of an activity page."
+  />
+</Wide>
+
+<Screenshot
+  narrow
+  src="/images/quests/create-activity.webp"
+  width={720}
+  height={1215}
+  alt="The Create Activity form with name, description, type, start and end time, and location. Requires Registration is ticked, showing fields for a registration URL, capacity, deadline and a waitlist option."
+  caption="Creating an activity with registration turned on."
+/>
+
+### Checking people in at the door
+
+Every student has a personal QR code on their profile. Organisers open a scanner on the activity page and
+scan it. I built both, then reworked the scanner for a queue of people: the organiser picks the mode once
+(check in on arrival, or mark attendance at the end), and after each scan the confirmation shows the
+person's name and points for a moment before the camera is ready for the next one.
+
+<Wide>
+  <ScreenshotPair
+    shots={[
+      {
+        src: "/images/quests/scanner-mode.webp",
+        width: 640,
+        height: 851,
+        alt: "The scanner on a phone asking the organiser to choose an action for this scanning session: Check in, or Mark attendance.",
+      },
+      {
+        src: "/images/quests/scanner-success.webp",
+        width: 640,
+        height: 958,
+        alt: "The scanner after a successful scan: Attendance logged, the participant's name, and plus 200 points.",
+      },
+    ]}
+    caption="The scanner on a phone: choose the mode once, then scan one person after another."
+  />
+</Wide>
+
+### Seeing where the points came from
+
+I built the points history on the profile, which puts points earned at activities and points spent in the
+shop in one timeline. The attendance API only returned activity ids, so I extended it to join the
+activity names in the database query rather than making the browser look each one up.
+
+<Wide>
+  <Screenshot
+    src="/images/quests/points-history.webp"
+    width={1600}
+    height={956}
+    alt="The Points History list: a sticker pack bought for 50 points, and four activities that earned between 80 and 150 points each, newest first."
+    caption="Points earned and spent, newest first."
+  />
+</Wide>
+
+I also built the first leaderboard page, with the top three on a podium and your own rank. Later I moved
+code redemption from a page of its own into a card on the profile, next to the points it adds to, and
+made the API client turn the API's validation errors into readable messages instead of raw error data.
+
+<Wide>
+  <Screenshot
+    src="/images/quests/redeem-error.webp"
+    width={1600}
+    height={218}
+    alt="A Redeem a code card with the code DEMO-NOT-A-CODE typed in and the message: That code doesn't exist."
+    caption="The redemption card on the profile, after an invalid code."
+  />
+</Wide>
+
+### Sessions that expire quietly
+
+Logins expire, and a student with the app open would hit a wall of failed requests. I made the client
+renew the session in the background when a request comes back unauthorised, retry that request once,
+and send the student to log in again only if renewal fails. When several requests fail at the same time,
+they all wait on the same renewal instead of starting one each.
+
+## Where it stands
+
+The platform hasn't been used at an event yet. The association plans to use it, and the team has kept
+building it since I stopped working on it in July.

@@ -44,7 +44,15 @@ export const education: Degree[] = [
   { degree: "BSc in Software Engineering", school: "University of Madeira", logo: "/logos/uma.webp", period: "2020 – 2024", since: "2020-09", region: "madeira" },
 ];
 
-export type SideProject = { title: string; context: string; text: string; stack: string[] };
+export type SideProject = {
+  title: string;
+  context: string;
+  text: string;
+  stack: string[];
+  /** A page of its own, when there is one. */
+  href?: string;
+  linkLabel?: string;
+};
 
 export const alsoBuilt: SideProject[] = [
   {
@@ -55,6 +63,8 @@ export const alsoBuilt: SideProject[] = [
   },
   {
     title: "Quests@NEI",
+    href: "/projects/quests",
+    linkLabel: "More about Quests@NEI",
     context: "Informatics Students' Association, University of Aveiro",
     text: "Co-developed the frontend of a platform that rewards students for taking part in the association's activities. I built the activity calendar and activity pages, the QR check-in for organisers, the first points leaderboard and a profile feed of points earned and spent. I also made expired sessions renew in the background and retry the request that failed.",
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI"],

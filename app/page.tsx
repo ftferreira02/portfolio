@@ -131,6 +131,11 @@ export default function Home() {
                 <p className="mt-0.5 mb-2 text-[0.92rem] text-muted">{p.context}</p>
                 <p>{p.text}</p>
                 <TechList items={p.stack} className="mt-2 block text-[0.9rem] text-muted" />
+                {p.href ? (
+                  <Link href={p.href} className="mt-2 inline-flex min-h-11 items-center font-medium underline underline-offset-4 hover:text-accent">
+                    {p.linkLabel}
+                  </Link>
+                ) : null}
               </TechScope>
             ))}
           </div>
