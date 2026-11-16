@@ -15,7 +15,7 @@ function subscribe(onChange: () => void) {
 const isScrolled = () => window.scrollY > 8;
 
 const nav = [
-  { href: "/#work", label: "Work" },
+  { href: "/#work", label: "Projects" },
   { href: "/#experience", label: "Experience" },
   { href: "/#contact", label: "Contact" },
 ];

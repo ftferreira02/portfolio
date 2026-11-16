@@ -45,7 +45,9 @@ const stops: Stop[] = [
   .sort((x, y) => y.since.localeCompare(x.since));
 
 const h2 = "font-display text-[clamp(1.7rem,3.4vw,2.4rem)] font-medium tracking-[-0.015em]";
-const h3 = "font-display text-[1.9rem] font-medium tracking-[-0.015em]";
+const h3 = "font-display text-[clamp(1.5rem,2.6vw,1.9rem)] font-medium tracking-[-0.015em]";
+/** A group heading inside a section, between h2 and the project titles. */
+const h3Group = "font-display text-[1.4rem] font-medium tracking-[-0.01em]";
 
 export default function Home() {
   return (
@@ -74,9 +76,9 @@ export default function Home() {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* Work */}
-        <section id="work" aria-labelledby="work-title">
-          <h2 id="work-title" className="sr-only">
-            Selected work
+        <section id="work" aria-labelledby="work-title" className="pt-12">
+          <h2 id="work-title" className={h2}>
+            Projects
           </h2>
 
           <div className="grid grid-cols-1 items-start gap-6 pt-8 pb-12 lg:grid-cols-2 lg:gap-12">
@@ -123,13 +125,14 @@ export default function Home() {
             <ImportDemo />
           </div>
 
-          <div className="grid grid-cols-1 gap-7 pt-4 md:grid-cols-2 md:gap-10">
+          <h3 className={`${h3Group} pt-8`}>Also worked on</h3>
+          <div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2 md:gap-10">
             {alsoBuilt.map((p) => (
               <div key={p.title}>
-                <h3 className="flex flex-wrap items-baseline gap-x-3 text-lg font-semibold">
+                <h4 className="flex flex-wrap items-baseline gap-x-3 text-lg font-semibold">
                   {p.title}
                   {p.status ? <span className="text-sm font-normal text-muted">{p.status}</span> : null}
-                </h3>
+                </h4>
                 <p className="mt-1 mb-2 text-meta text-muted">{p.context}</p>
                 <p>{p.text}</p>
                 <TechList items={p.stack} className="mt-2 block text-meta text-muted" />

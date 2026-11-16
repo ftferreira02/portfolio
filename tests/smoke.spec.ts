@@ -163,7 +163,7 @@ test("mobile menu dismisses after selection, Escape, and clicking outside", asyn
   const menu = page.locator("header details");
   const toggle = menu.locator("summary");
   await toggle.click();
-  await menu.getByRole("link", { name: "Work", exact: true }).click();
+  await menu.getByRole("link", { name: "Projects", exact: true }).click();
   await expect(menu).not.toHaveAttribute("open", "");
   await expect(page).toHaveURL(/#work$/);
   await toggle.click();
