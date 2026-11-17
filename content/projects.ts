@@ -61,6 +61,7 @@ export const projects: Project[] = [
     stats: [],
     sections: ["The problem", "What I built", "Where it stands"],
     stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI", "FastAPI"],
+    links: [{ label: "Live platform", href: "https://nei.web.ua.pt/game/" }],
     linkLabel: "More about Quests@NEI",
   },
 ];
