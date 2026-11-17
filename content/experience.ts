@@ -65,14 +65,6 @@ export const alsoBuilt: SideProject[] = [
     stack: ["Expo", "React Native", "TypeScript", "Expo Router", "Reanimated", "Supabase", "PostgreSQL"],
   },
   {
-    title: "Quests@NEI",
-    href: "/projects/quests",
-    linkLabel: "More about Quests@NEI",
-    context: "Informatics Students' Association, University of Aveiro",
-    text: "Co-developed a student activity and rewards platform. I built the calendar, activity pages, QR check-in, leaderboard, points history, and background session renewal.",
-    stack: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Tailwind CSS", "Radix UI"],
-  },
-  {
     title: "Booking and payment apps",
     context: "KBAI Research, for Expedita's Gestools",
     text: "Booking and payment web apps for Expedita's Gestools, run from one codebase for several client brands, each with its own theme, settings and deployment. I built the customer account area on the loyalty programme's web services: sign-up, login with JWT sessions, password recovery, profile editing, and pages for past reservations and vouchers. I also worked on the booking steps (location, duration, tariff, extras) in a site available in four languages, and on a Microsoft Teams app where staff manage services, seasons, tariffs and bookings.",

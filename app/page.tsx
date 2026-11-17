@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CopyEmail } from "@/components/copy-email";
+import { CheckinDemo } from "@/components/home/checkin-demo";
 import { HeroShell } from "@/components/home/hero-shell";
 import { ImportDemo } from "@/components/home/import-demo";
 import { MemoriaDemo } from "@/components/home/memoria-demo";
@@ -26,6 +27,7 @@ const personJsonLd = {
 
 const memoria = getProject("memoria");
 const edufiable = getProject("edufiable");
+const quests = getProject("quests");
 
 const [found, sus, people] = memoria.stats;
 
@@ -123,6 +125,28 @@ export default function Home() {
               </div>
             </div>
             <ImportDemo />
+          </div>
+
+          <div className="grid grid-cols-1 items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+            <div>
+              <h3 className={h3}>{quests.title}</h3>
+              <p className="mt-1 mb-4 text-meta text-muted tabular-nums">
+                {quests.context.replace(" · ", ", ")}, {quests.period}
+              </p>
+              <p className="max-w-[58ch]">A platform that rewards students for taking part in their association&apos;s activities. On the team&apos;s web app I built the activity calendar and pages, the QR check-in organisers use at the door, the first leaderboard and the points history.</p>
+              <TechList items={quests.stack} className="mt-4 block text-meta text-muted" />
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-medium">
+                <Link href={`/projects/${quests.slug}`} className="underline underline-offset-4 hover:text-accent">
+                  {quests.linkLabel}
+                </Link>
+                {quests.links?.map((l) => (
+                  <a key={l.href} href={l.href} rel="noopener noreferrer" className="underline underline-offset-4 hover:text-accent">
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <CheckinDemo />
           </div>
 
           <h3 className={`${h3Group} pt-8`}>Also worked on</h3>

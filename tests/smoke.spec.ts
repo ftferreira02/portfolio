@@ -90,6 +90,16 @@ test("the import demo starts on the result, replays once in view, and stops", as
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
 });
 
+test("the check-in demo starts on the result, replays once in view, and stops", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("3 of 3 checked in")).toBeAttached();
+  await page.getByText("Git workshop, at the door").scrollIntoViewIfNeeded();
+  await expect(page.getByText(/Tiago goes from 4th to 2nd/)).toBeVisible({ timeout: 10000 });
+  await expect(page.getByText(/Rui is the new first place/)).toBeVisible({ timeout: 20000 });
+  await expect(page.getByRole("button", { name: "Scan again" })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Leaderboard" }).getByRole("listitem").first()).toHaveText("Rui S., 160 points");
+});
+
 test.describe("with reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
@@ -102,6 +112,10 @@ test.describe("with reduced motion", () => {
     await page.waitForTimeout(1500);
     await expect(page.getByText(/Batch completed/)).toBeVisible();
     await expect(page.getByRole("button", { name: "Play", exact: true })).toBeVisible();
+    await page.getByText("Git workshop, at the door").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1500);
+    await expect(page.getByText("3 of 3 checked in")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Scan", exact: true })).toBeVisible();
   });
 });
 
