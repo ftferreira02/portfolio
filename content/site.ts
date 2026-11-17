@@ -3,8 +3,7 @@ export const site = {
   role: "Software Engineer",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://ftferreira.vercel.app",
   headline: "Hi, I'm Francisco",
-  // Non-breaking spaces keep "end to end" on one line.
-  tagline: "I build web apps end to end",
+  tagline: "Software developer focused on full-stack web applications.",
   intro: "MSc in Software Engineering, University of Aveiro.",
   availability: "Available for full-time roles",
   description:
