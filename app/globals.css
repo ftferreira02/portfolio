@@ -541,6 +541,91 @@ p {
   }
 }
 
+/* ---------- Home: hero court ---------- */
+.hero-court {
+  --court-cond: var(--font-padel-display), "Arial Narrow", system-ui, sans-serif;
+  position: relative;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  background: #0a0f24;
+  color: #0b1020;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
+  font-family: var(--court-cond);
+  text-transform: uppercase;
+}
+.hero-court-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s var(--ease-out);
+}
+.hero-court:hover .hero-court-img,
+.hero-court:focus-visible .hero-court-img {
+  transform: scale(1.02);
+}
+.hero-court-bug {
+  position: absolute;
+  left: 4%;
+  top: 6%;
+  padding: 2px 9px;
+  background: #ffd60a;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+.hero-court-caption {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 6%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  filter: drop-shadow(0 8px 24px rgb(0 0 0 / 0.4));
+}
+.hero-court-line {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-left: 6px solid #ffd60a;
+  background: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1;
+  text-wrap: balance;
+}
+.hero-court-serve {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: #ffd60a;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  transition: background-color 0.15s ease;
+}
+.hero-court:hover .hero-court-serve {
+  background: #ffe14a;
+}
+.hero-court-serve::after {
+  content: "";
+  margin-left: 10px;
+  border-left: 0.5em solid currentColor;
+  border-block: 0.34em solid transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-court-img {
+    transition: none;
+  }
+}
+/* The still grows into the live court when the match opens. */
+::view-transition-group(padel-court) {
+  animation-duration: 450ms;
+  animation-timing-function: var(--ease-out);
+}
+
 /* ---------- Home: hero field ---------- */
 .hero-field {
   /* Fade out towards the bottom so the field melts into the page. */

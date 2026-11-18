@@ -20,19 +20,39 @@ const nav = [
   { href: "/#contact", label: "Contact" },
 ];
 
+/** The site has two versions of the same story: the written portfolio and the padel match. This switches between them. */
+function VersionSwitch({ onMatch, className = "" }: { onMatch: boolean; className?: string }) {
+  const item = (active: boolean) =>
+    `rounded-[7px] px-2.5 py-1.5 transition-colors ${active ? "bg-soft text-text" : "text-muted hover:text-text"}`;
+  return (
+    <div role="group" aria-label="Portfolio version" className={`items-center rounded-[10px] border border-line p-0.5 text-sm ${className}`}>
+      <Link href="/" aria-current={onMatch ? undefined : "true"} className={item(!onMatch)}>
+        Portfolio
+      </Link>
+      <Link href="/padel" aria-current={onMatch ? "true" : undefined} className={item(onMatch)}>
+        Match
+      </Link>
+    </div>
+  );
+}
+
 export function SiteHeader() {
   const scrolled = useSyncExternalStore(subscribe, isScrolled, () => false);
+  const pathname = usePathname();
+  // On the match the header carries only the way back and the CV; the court below is the page.
+  const onMatch = pathname === "/padel";
   // The home page already opens with "Hi, I'm Francisco", so at the top only the mark shows; the name joins on scroll.
-  const hideName = usePathname() === "/" && !scrolled;
+  const hideName = pathname === "/" && !scrolled;
   return (
     <header
+      data-version={onMatch ? "match" : "portfolio"}
       className={`sticky top-0 z-40 border-b transition-[background-color,border-color] duration-200 ${
         scrolled
           ? "border-line bg-bg/90 backdrop-blur"
           : "border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6">
+      <div className={`mx-auto flex h-16 items-center justify-between gap-4 ${onMatch ? "max-w-[1704px] px-3" : "max-w-6xl px-5 sm:px-6"}`}>
         <Link href="/" aria-label={`${site.name}, home`} className="site-mark group flex min-w-0 items-center gap-2">
           {/* The site's mark: Madeira, an island over the Atlantic. */}
           <svg aria-hidden="true" viewBox="0 0 32 32" className="size-7 shrink-0">
@@ -47,12 +67,21 @@ export function SiteHeader() {
             />
           </svg>
           <span
-            className={`truncate font-display text-lg font-medium transition-opacity duration-200 sm:text-xl ${hideName ? "invisible opacity-0" : "opacity-100"}`}
+            className={`truncate font-display text-lg font-medium transition-opacity duration-200 sm:text-xl ${onMatch ? "hidden sm:inline" : ""} ${hideName ? "invisible opacity-0" : "opacity-100"}`}
           >
             {site.name}
           </span>
         </Link>
         <nav aria-label="Main" className="flex shrink-0 items-center gap-1 sm:gap-2">
+          {onMatch ? (
+            <>
+              <VersionSwitch onMatch className="flex" />
+              <a href={site.cv} className="rounded-md px-3 py-2 text-muted transition-colors hover:text-text">
+                CV
+              </a>
+            </>
+          ) : (
+            <>
           <ul className="hidden items-center gap-1 sm:flex">
             {nav.map((item) => (
               <li key={item.href}>
@@ -73,6 +102,7 @@ export function SiteHeader() {
               </a>
             </li>
           </ul>
+          <VersionSwitch onMatch={false} className="ml-1 hidden sm:flex" />
           <NavDisclosure className="relative sm:hidden"
             summaryClassName="flex size-11 cursor-pointer list-none items-center justify-center rounded-[10px] border border-line [&::-webkit-details-marker]:hidden"
             summary={<>
@@ -109,9 +139,16 @@ export function SiteHeader() {
                   CV
                 </a>
               </li>
+              <li className="mt-1 border-t border-line pt-1">
+                <Link href="/padel" className="block rounded px-3 py-2.5 hover:bg-soft">
+                  Padel match
+                </Link>
+              </li>
             </ul>
           </NavDisclosure>
           <ThemeToggle className="ml-1" />
+            </>
+          )}
         </nav>
       </div>
     </header>
