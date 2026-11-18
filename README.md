@@ -1,6 +1,8 @@
 # Francisco Ferreira, portfolio
 
 Personal portfolio site: a one-page home plus a page for each featured project.
+The alternate `/padel` portfolio tells the same story through an animated padel match.
+See [the match notes](docs/padel.md) for its content, animation structure and shot choices.
 
 Built with Next.js 16 (App Router, fully static), TypeScript, Tailwind CSS v4 and MDX. Diagrams are
 hand-drawn SVG React components that follow the light/dark theme.
