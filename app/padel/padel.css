@@ -1,0 +1,216 @@
+  .padel-page .padel-match {
+    /* Broadcast graphics */
+    --navy: #0b1230; --ink: #0b1020; --paper: #fff; --team: #ffd60a; --hot: #ff3b30;
+    /* Chrome: one navy ramp, two text roles and two hairlines */
+    --deep: #0a0f24; --panel: #121a2e; --raised: #1b2440; --hover: #232e4f;
+    --text-2: #c0c7da; --dim: #98a1bd; --line: rgba(255, 255, 255, 0.12); --line-strong: rgba(255, 255, 255, 0.2);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --cond: var(--font-padel-display), "Arial Narrow", system-ui, sans-serif;
+    font-family: var(--font-padel-body), system-ui, sans-serif; line-height: 1.35;
+    display: grid; grid-template-rows: minmax(0, 1fr) auto auto auto; gap: 8px; min-height: 0; width: 100%; height: 100%; max-width: 1200px; margin: 0 auto; padding: 12px; border-radius: var(--radius, 12px);
+    background: #10131d; color: #fff; outline: none;
+  }
+  .padel-page .view { grid-row: 1; min-height: 0; position: relative; border-radius: 6px; overflow: hidden; background: var(--deep); }
+  .padel-page .view canvas { display: block; width: 100%; height: 100%; }
+  .padel-page .punch { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: #fff; }
+
+  /* Score bug: a fixed width, so it doesn't change size between chapters */
+  .padel-page .bug { position: absolute; left: 3%; top: 5%; min-width: 248px; font-family: var(--cond); text-transform: uppercase; box-shadow: var(--shadow); display: grid; grid-template-columns: 12px 1fr minmax(52px, auto); }
+  .padel-page .bug-h { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 16px; padding: 4px 10px; background: var(--team); color: var(--ink); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; }
+  .padel-page .bug .row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; background: var(--navy); font-weight: 700; font-size: 20px; letter-spacing: 0.02em; }
+  .padel-page .bug .row + .row { border-top: 1px solid var(--line); }
+  .padel-page .bug .row i { width: 8px; height: 8px; margin-left: 8px; border-radius: 50%; }
+  .padel-page .bug .row i.on { background: var(--team); }
+  .padel-page .bug .row b { padding: 4px 16px 4px 8px; font-weight: 700; }
+  .padel-page .bug .pt { align-self: stretch; display: grid; place-items: center; padding: 0 8px; background: var(--paper); color: var(--ink); font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
+  .padel-page .live { position: absolute; right: 3%; top: 5%; display: flex; align-items: stretch; font-family: var(--cond); font-weight: 800; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; box-shadow: var(--shadow); }
+  .padel-page .live span { padding: 4px 8px; background: var(--hot); display: flex; align-items: center; gap: 8px; }
+  .padel-page .live span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+  .padel-page .live b { padding: 4px 12px; background: var(--paper); color: var(--ink); font-weight: 800; }
+
+  /* Lower third */
+  .padel-page .l3 { position: absolute; left: 3%; bottom: 6%; width: min(480px, 50%); filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4)); }
+  .padel-page .l3-tag { display: inline-block; padding: 4px 24px 4px 12px; background: var(--hot); font-family: var(--cond); font-weight: 800; font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
+  .padel-page .l3-main { position: relative; padding: 12px 20px 12px 16px; background: var(--paper); color: var(--ink); border-left: 8px solid var(--team); }
+  .padel-page .l3 h2 { margin: 0; font-family: var(--cond); font-weight: 800; font-size: clamp(22px, 2.8vw, 34px); line-height: 0.98; text-transform: uppercase; letter-spacing: 0.005em; text-wrap: balance; }
+  .padel-page .l3 p { margin: 8px 0 0; font-size: clamp(13px, 1.2vw, 15px); line-height: 1.38; font-weight: 500; color: #2a3350; }
+  .padel-page .l3 .links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-top: 8px; font-weight: 600; font-size: 15px; }
+  .padel-page .l3 a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .padel-page .l3 a:hover { text-decoration-thickness: 2px; }
+  .padel-page .l3 .timer { position: absolute; left: 0; bottom: 0; height: 4px; width: 0; background: var(--hot); }
+  .padel-page .l3.right { left: auto; right: 3%; }
+  .padel-page .l3.end { left: 3%; bottom: 3%; }
+  .padel-page .l3.end .links { justify-content: flex-start; }
+  @media (min-width: 601px) {
+    /* While a shot is being chosen the dialog sits at the bottom, so the caption moves up under the score to stay readable. */
+    .padel-page .padel-match[data-pending-choice]:not([data-pending-choice=""]) .l3 { left: 3%; right: auto; top: 26%; bottom: auto; }
+    /* The "Why?" note opens on the side away from the caption. */
+    .padel-page .padel-match[data-card-side="left"] .choice-feedback { left: auto; right: 0; }
+  }
+
+  /* Point graphic and speed chip */
+  .padel-page .wipe { position: absolute; left: 0; right: 0; top: 68%; display: flex; justify-content: center; pointer-events: none; opacity: 0; font-family: var(--cond); text-transform: uppercase; }
+  .padel-page .wipe div { display: flex; align-items: stretch; transform: skewX(-10deg); box-shadow: var(--shadow); }
+  .padel-page .wipe span { padding: 8px 24px; background: var(--navy); font-weight: 700; font-size: clamp(18px, 3vw, 34px); letter-spacing: 0.05em; display: grid; place-items: center; }
+  .padel-page .wipe b { padding: 4px 28px; background: var(--team); color: var(--ink); font-weight: 800; font-size: clamp(34px, 6.5vw, 78px); line-height: 1; display: grid; place-items: center; }
+  .padel-page .speed { position: absolute; right: 3%; bottom: 8%; opacity: 0; pointer-events: none; display: flex; font-family: var(--cond); text-transform: uppercase; font-weight: 800; box-shadow: var(--shadow); }
+  .padel-page .speed span { padding: 4px 12px; background: var(--navy); font-size: 16px; letter-spacing: 0.08em; display: grid; place-items: center; }
+  .padel-page .speed b { padding: 4px 12px; background: var(--paper); color: var(--ink); font-size: 26px; }
+
+  /* Controls: Next is the one primary; everything else shares one quiet style */
+  .padel-page .bottom { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; grid-row: 3; min-width: 0; margin: 0; font-family: var(--cond); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+  .padel-page button { font: inherit; color: inherit; cursor: pointer; letter-spacing: inherit; text-transform: inherit; }
+  .padel-page .next { min-height: 46px; min-width: 128px; padding: 0 24px; border: 0; border-radius: 4px; background: var(--team); color: var(--ink); font-weight: 800; font-size: 20px; transition: background-color 0.15s ease; }
+  .padel-page .next:hover { background: #ffe14a; }
+  .padel-page .next:active { transform: translateY(1px); }
+  .padel-page .back, .padel-page .settings-summary { min-height: 44px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--dim); font: 700 14px var(--cond); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; transition: color 0.15s ease, background-color 0.15s ease; }
+  .padel-page [data-match="sound"][aria-pressed="true"] { color: #fff; }
+  .padel-page .back:hover:not(:disabled), .padel-page .settings-summary:hover, .padel-page .match-settings[open] .settings-summary { color: #fff; background: var(--raised); }
+  .padel-page .progress { display: flex; gap: 4px; flex: 1 1 60px; min-width: 48px; }
+  .padel-page .progress i { flex: 1; height: 4px; background: rgba(255, 255, 255, 0.14); overflow: hidden; }
+  .padel-page .progress i b { display: block; height: 100%; width: 0; background: var(--team); }
+  /* The mode switch reads as plain words; the chosen one is lit with an underline in the team colour */
+  .padel-page .modes { display: flex; gap: 2px; padding: 0 8px; border-inline: 1px solid var(--line); font-size: 14px; letter-spacing: 0.06em; }
+  .padel-page .modes button { position: relative; min-height: 44px; padding: 0 10px; border: 0; border-radius: 4px; background: transparent; color: var(--dim); transition: color 0.15s ease, background-color 0.15s ease; }
+  .padel-page .modes button:hover:not(:disabled):not([aria-pressed="true"]) { color: #fff; background: var(--raised); }
+  .padel-page .modes button[aria-pressed="true"] { color: #fff; }
+  .padel-page .modes button[aria-pressed="true"]::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 8px; height: 2px; background: var(--team); }
+  .padel-page .hint { grid-row: 4; margin: 0; font-size: 14px; color: var(--dim); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .padel-page .hint a { color: var(--dim); text-underline-offset: 3px; }
+  .padel-page :focus-visible { outline: 2px solid var(--team); outline-offset: 2px; }
+
+  @media (max-width: 600px) {
+    .padel-page .view { display: grid; grid-template-rows: minmax(0, 1fr) auto; overflow: hidden; background: var(--deep); }
+    .padel-page .view canvas { grid-row: 1; min-height: 0; width: 100%; height: 100%; border-radius: 6px; }
+    .padel-page .l3, .padel-page .l3.end { position: relative; left: auto; bottom: auto; transform: none; width: auto; min-height: 0; margin: 0; grid-row: 2; text-align: left; filter: none; }
+    .padel-page .bug { left: 8px; top: 8px; } .padel-page .bug .row { font-size: 15px; }
+    .padel-page .live { right: 8px; top: 8px; }
+    .padel-page .speed, .padel-page .punch { display: none; }
+    /* Low on the court: below the stadium sign and the players the reaction camera frames */
+    .padel-page .wipe { top: 64%; }
+  }
+
+/* The match is its own dark, full-screen mode of the site: the shared header turns dark with it and the footer steps aside.
+   This keys off the header, which knows the current route. The match page itself can't be used: after navigating away
+   Next keeps it in the document, hidden, so a selector on it would leave the rest of the site dark. */
+body:has(> header[data-version="match"]) {
+  color-scheme: dark;
+  --bg: #10131d; --text: #eef1f7; --text-muted: #98a1bd; --line: #2c3350; --soft: #1e2540; --accent: #ffd60a; --accent-strong: #ffe45c; --card: #161b2e; --on-accent: #0b1020;
+  background: var(--bg); color: var(--text);
+}
+body:has(> header[data-version="match"]) > footer { display: none; }
+.padel-page { height: calc(100dvh - 65px); min-height: 0; padding: 0 12px 12px; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.padel-page .padel-match { max-width: 1680px; padding: 0; border-radius: 0; background: none; }
+.padel-page .match-loading { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; gap: 12px; padding: 24px; background: var(--deep) url("/padel/court.webp") center / cover; color: #fff; text-align: center; }
+.padel-page .match-loading > * { justify-self: center; padding: 8px 16px; background: #0b1230e6; }
+.padel-page .match-loading p { max-width: 38ch; }
+.padel-page .match-loading a { color: var(--team); text-decoration: underline; text-underline-offset: 4px; }
+.padel-page .match-loading[hidden] { display: none; }
+.padel-page .bottom button:disabled { opacity: 0.55; cursor: default; }
+@media (max-width: 600px) {
+  .padel-page { padding: 0 12px 12px; }
+  .padel-page .bottom { display: grid; grid-template-columns: 48px minmax(0, 1fr) 112px; grid-template-areas: "progress progress progress" "back next sound" "modes modes settings"; gap: 8px; }
+  .padel-page [data-match="back"] { grid-area: back; padding: 0 4px; }
+  .padel-page [data-match="next"] { grid-area: next; min-width: 0; padding: 0 8px; font-size: 18px; }
+  .padel-page [data-match="sound"] { grid-area: sound; padding: 0 8px; font-size: 13px; }
+  .padel-page .hint { display: none; }
+  .padel-page .progress { grid-area: progress; min-width: 0; }
+  .padel-page .modes { grid-area: modes; min-width: 0; }
+  .padel-page .match-settings { grid-area: settings; }
+  .padel-page .back, .padel-page .next, .padel-page .settings-summary { min-height: 40px; }
+  .padel-page .settings-summary { padding: 0 8px; font-size: 13px; }
+  .padel-page .modes { padding: 0; border-inline: 0; font-size: 13px; }
+  .padel-page .modes button { flex: 1; min-height: 38px; padding: 0 8px; }
+  .padel-page .modes button[aria-pressed="true"]::after { left: 8px; right: 8px; bottom: 6px; }
+  .padel-page .live { font-size: 11px; }
+  .padel-page .live b { display: none; }
+  .padel-page .bug { min-width: 0; max-width: 62%; }
+  .padel-page .bug-h { font-size: 11px; gap: 8px; }
+  .padel-page .bug .row b { padding-right: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .padel-page [data-motion="reduced"] *, .padel-page [data-motion="reduced"] *::before, .padel-page [data-motion="reduced"] *::after { animation: none !important; transition: none !important; }
+  .padel-page [data-motion="reduced"] .punch, .padel-page [data-motion="reduced"] .speed { display: none; }
+}
+
+/* Settings popover */
+.padel-page .motion-setting { position: absolute; z-index: 12; right: 0; bottom: calc(100% + 8px); width: min(300px, calc(100vw - 48px)); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; margin: 0; padding: 16px; }
+.padel-page .motion-setting p { margin: 0; font-family: var(--font-padel-body), system-ui, sans-serif; font-size: 14px; font-weight: 500; line-height: 1.45; letter-spacing: 0; text-transform: none; color: var(--text-2); }
+
+/* Shot choice */
+.padel-page .shot-choice { position: fixed; inset: auto 0 16px; margin: 0 auto; width: min(740px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 24px; color: #fff; background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--team); border-radius: 6px; box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5); }
+.padel-page .shot-choice::backdrop { background: #050a1833; }
+.padel-page .choice-close { float: right; margin: 0 0 12px 12px; min-height: 36px; padding: 4px 12px; border: 1px solid var(--line-strong); border-radius: 4px; background: transparent; color: var(--text-2); font-size: 14px; transition: color 0.15s ease, border-color 0.15s ease; }
+.padel-page .choice-close:hover { color: #fff; border-color: rgba(255, 255, 255, 0.36); }
+.padel-page .shot-choice h2 { margin: 4px 0 8px; font: 700 clamp(26px, 4vw, 34px)/1 var(--cond); text-transform: uppercase; }
+.padel-page .shot-choice > p { max-width: 70ch; color: var(--text-2); font-size: 14px; }
+.padel-page .choice-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0 12px; }
+.padel-page .choice-options button { padding: 16px; border: 1px solid var(--line-strong); border-radius: 4px; text-align: left; text-transform: none; background: var(--raised); transition: background-color 0.15s ease, border-color 0.15s ease; }
+.padel-page .choice-options button:hover, .padel-page .choice-options button[aria-pressed="true"] { border-color: var(--team); background: var(--hover); }
+.padel-page .choice-options strong { display: block; color: var(--team); font: 700 26px var(--cond); }
+.padel-page .choice-options span { display: block; margin-top: 8px; font-size: 14px; color: var(--text-2); line-height: 1.4; }
+.padel-page .shot-choice > .choice-note { font-size: 14px; color: var(--dim); }
+.padel-page .match-settings { position: relative; }
+.padel-page .settings-summary { display: flex; align-items: center; justify-content: center; cursor: pointer; list-style: none; }
+.padel-page .settings-summary::-webkit-details-marker, .padel-page .result-summary::-webkit-details-marker { display: none; }
+.padel-page .shot-choice[hidden], .padel-page .choice-feedback[hidden] { display: none; }
+
+/* Last point "Why?". On wider screens its row is reserved from the start, so the court doesn't jump when the first
+   point ends. Phones skip that: an empty strip above the controls costs more there than one small resize. */
+.padel-page .result-details { position: relative; grid-row: 2; min-height: 28px; }
+.padel-page .result-details:has([data-match="choice-feedback"][hidden]) { visibility: hidden; }
+@media (max-width: 600px) {
+  .padel-page .result-details:has([data-match="choice-feedback"][hidden]) { display: none; }
+}
+.padel-page .result-summary { width: fit-content; min-height: 28px; display: flex; align-items: center; gap: 8px; cursor: pointer; list-style: none; font-size: 14px; color: var(--dim); transition: color 0.15s ease; }
+.padel-page .result-summary:hover, .padel-page .result-details[open] .result-summary { color: #fff; }
+.padel-page .choice-feedback { position: absolute; z-index: 12; bottom: calc(100% + 8px); left: 0; max-width: min(440px, calc(100vw - 48px)); border: 1px solid var(--line); border-left: 3px solid var(--team); padding: 12px 16px; margin: 0; border-radius: 6px; background: var(--panel); color: var(--text-2); font-size: 14px; line-height: 1.5; box-shadow: var(--shadow); }
+
+.padel-no-script { max-width: 1168px; margin: 16px auto; text-align: center; color: var(--text-muted); }
+
+@media (max-width: 600px) {
+  .padel-page .l3 h2 { font-size: 22px; }
+  .padel-page .l3 p { font-size: 12px; line-height: 1.35; margin-top: 4px; }
+  .padel-page .l3-main { padding: 8px 12px; border-left-width: 4px; }
+  .padel-page .l3-tag { font-size: 12px; padding: 2px 12px; }
+  .padel-page .l3 .links { font-size: 12px; gap: 4px 16px; margin-top: 4px; }
+  /* Keep the paused contact visible above the decision tray. */
+  .padel-page .shot-choice { padding: 12px; bottom: 8px; }
+  .padel-page .shot-choice > p { font-size: 12px; }
+  .padel-page .shot-choice h2 { clear: both; font-size: 22px; margin: 4px 0; }
+  .padel-page .choice-options { grid-template-columns: 1fr; gap: 8px; margin: 8px 0 0; }
+  .padel-page .choice-options button { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 12px; align-items: center; min-height: 52px; padding: 8px 12px; }
+  .padel-page .choice-options strong { font-size: 20px; }
+  .padel-page .choice-options span { font-size: 12px; margin-top: 0; }
+  .padel-page .shot-choice > .choice-note { display: none; }
+}
+@media (max-height: 600px) and (min-width: 601px) {
+  .padel-page { padding: 0 12px 8px; }
+  .padel-page .hint { display: none; }
+  .padel-page .padel-match { gap: 4px; }
+  .padel-page .bug { min-width: 0; }
+  .padel-page .bug-h { display: none; }
+  .padel-page .bug .row { font-size: 12px; }
+  .padel-page .bug .row b { padding: 2px 8px; }
+  .padel-page .bug .pt { font-size: 14px; }
+  .padel-page .l3 { bottom: 8px; }
+  .padel-page .l3-main { padding: 8px 12px; }
+  .padel-page .l3 h2 { font-size: 22px; }
+  .padel-page .l3 p, .padel-page .l3 .links { font-size: 12px; line-height: 1.3; margin-top: 4px; }
+  .padel-page .l3-tag { font-size: 12px; padding: 2px 12px; }
+  .padel-page .shot-choice { padding: 12px 16px; }
+  .padel-page .choice-options { margin: 12px 0 0; }
+  .padel-page .shot-choice > .choice-note { display: none; }
+  .padel-page .shot-choice h2 { font-size: 26px; margin-top: 0; }
+  .padel-page .choice-options button { padding: 12px; }
+  .padel-page .choice-options span { font-size: 12px; }
+}
+
+/* A dedicated baseline keeps commentary below either lower third. */
+.padel-page .commentary { position: absolute; bottom: 0; left: 0; right: 0; height: 34px; padding: 6px 16px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; background: #0b1230ed; color: #fff8e9; font: 600 18px/22px var(--cond); pointer-events: none; }
+.padel-page .commentary[hidden], .padel-page .progress i[hidden] { display: none; }
+.padel-page .l3.end .l3-main { border-color: #d3a936; background: #f5ebcf; }
+@media (max-width: 600px), (max-height: 600px) { .padel-page .commentary { display: none; } }
+
+.padel-page .commentary::before { content: "COMMENTARY"; background: var(--team); color: var(--ink); font-weight: 800; font-size: 14px; padding: 2px 8px; margin-right: 12px; }
+@media (min-width: 601px) and (min-height: 601px) { .padel-page .l3:not(.end) { bottom: max(6%, 44px); } }
