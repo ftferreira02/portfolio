@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:padel-model": "node --test tests/unit/padel-decisions.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
